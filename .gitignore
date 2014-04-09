@@ -6,4 +6,4 @@ Library/
 *.sln
 *.userprefs
 [Bb]uilds/
-
+*/.DS_Store
