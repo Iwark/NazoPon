@@ -1,5 +1,8 @@
 ﻿#pragma strict
 
+import MiniJSON;
+import System.Collections.Generic;
+
 var guiLayer : GUILayer;
 public var rooms : GameObject[];
 rooms = GameObject.FindGameObjectsWithTag("rooms");
@@ -12,6 +15,13 @@ text_make_room = GameObject.FindGameObjectWithTag("text_make_room");
 
 public var RoomCount : int;
 RoomCount = 2;//部屋の数を表示
+
+private var wss:WebSocketScript;
+
+function Awake() {
+	wss = GameObject.Find("WebSocket").GetComponent(WebSocketScript);
+	Debug.Log("trolleys:"+wss.trolleys);
+}
 
 function Start () {
 	guiLayer = Camera.main.GetComponent(GUILayer);
@@ -56,6 +66,13 @@ function Update () {
 			//hit.collider.renderer.material.color = Color(255, 120, 120, 1.0f);
 			
 			if(hit.name.Equals("Button0")) {
+				Debug.Log(wss.trolleys);
+				var trolleys:List.<System.Object> = Json.Deserialize(wss.trolleys) as List.<System.Object>;
+				// Debug.Log("x");
+				if(trolleys.Count > 0){
+					var trolley = trolleys[0] as Dictionary.<String, System.Object>;
+					Debug.Log("category :" + trolley["category"]);
+				}
 				while(i <7) {
 					make_room[i].SetActive(false);
 					i++;
@@ -168,6 +185,7 @@ function Update () {
 
 			}
 			if(hit.tag.Equals("make_room")){
+				wss.RideTrolley("新入り");
 				Application.LoadLevel("Roading");
 
 			}
