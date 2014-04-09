@@ -1,0 +1,9 @@
+Temp/
+Library/
+*.pidb
+*.csproj
+*.unityproj
+*.sln
+*.userprefs
+[Bb]uilds/
+*/.DS_Store

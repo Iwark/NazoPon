@@ -9,7 +9,7 @@ public class WebSocketScript : MonoBehaviour {
     private myJS jsScript;
 
     void Awake () {
-        jsScript = (myJS)this.GetComponent(typeof(myJS)) as myJS;
+        jsScript = this.GetComponent<myJS>();
         Debug.Log("jsScript:"+jsScript);
         if(jsScript != null) jsScript.showMessage2();
     }
