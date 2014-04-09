@@ -1,10 +1,19 @@
 ﻿<Properties>
+<<<<<<< HEAD
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\NazoPon_Scripts\GUIscript.js">
     <Files>
       <File FileName="Assets\NazoPon_Scripts\GUIscript.js" Line="10" Column="49" />
       <File FileName="Assets\NazoPon_Scripts\QuizShowingScript.js" Line="11" Column="30" />
       <File FileName="Assets\NazoPon_Scripts\VehicleMove.js" Line="85" Column="54" />
+=======
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/CubeBehaviorScript.js">
+    <Files>
+      <File FileName="Assets/Sample.js" Line="12" Column="1" />
+      <File FileName="Assets/CubeBehaviorScript.js" Line="9" Column="46" />
+      <File FileName="Assets/Allsorts/CategorySelectScript.js" Line="8" Column="19" />
+>>>>>>> origin/master
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
