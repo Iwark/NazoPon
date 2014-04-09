@@ -50,10 +50,15 @@
      <Compile Include="Assets\NazoPon_Scripts\QuizShowingScript.js" />
      <Compile Include="Assets\NazoPon_Scripts\VehicleMove.js" />
      <None Include="Assets\Standard Assets\Water (Basic)\Sources\Shaders\FX-Water Simple.shader" />
+ <Reference Include="websocket-sharp">
+ <HintPath>Assets\Dll\websocket-sharp.dll</HintPath>
+ </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
       <Project>{6A99E07C-62F0-1DB1-BC0A-C9231383A25D}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+    <ProjectReference Include="Assembly-UnityScript-firstpass.unityproj">
+      <Project>{48954083-8011-31A2-7755-B14E68E65F07}</Project>      <Name>Assembly-UnityScript-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
