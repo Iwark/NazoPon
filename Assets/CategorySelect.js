@@ -163,7 +163,11 @@ function Update () {
 				//make_room.SetActive(false);
 				//rooms.SetActive(true);
 			}
-			if(hit.name.Equals("category0")){
+			if(hit.tag.Equals("rooms")){
+				Application.LoadLevel("Roading");
+
+			}
+			if(hit.tag.Equals("make_room")){
 				Application.LoadLevel("Roading");
 
 			}
