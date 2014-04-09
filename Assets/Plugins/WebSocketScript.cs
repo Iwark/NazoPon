@@ -6,12 +6,12 @@ using MiniJSON;
 
 public class WebSocketScript : MonoBehaviour {
  
-    private myJS jsScript;
+    //private myJS jsScript;
 
     void Awake () {
-        jsScript = this.GetComponent<myJS>();
-        Debug.Log("jsScript:"+jsScript);
-        if(jsScript != null) jsScript.showMessage2();
+        //jsScript = this.GetComponent<myJS>();
+        //Debug.Log("jsScript:"+jsScript);
+        //if(jsScript != null) jsScript.showMessage2();
     }
 
     // Use this for initialization
@@ -65,10 +65,10 @@ public class WebSocketScript : MonoBehaviour {
                 sendData["get_trolleys"] = null;
                 ws.Send(Json.Serialize(sendData));
             }else if(dict.ContainsKey("trolleys")){
-                Debug.Log("showMessage2");
-                jsScript.showMessage2();
-                Debug.Log("showMessage");
-                jsScript.showMessage(dict);
+                //Debug.Log("showMessage2");
+                //jsScript.showMessage2();
+                //Debug.Log("showMessage");
+                //jsScript.showMessage(dict);
             }
             messages.Add("> " + e.Data);
             if(messages.Count > 10){
@@ -98,6 +98,10 @@ public class WebSocketScript : MonoBehaviour {
  
         ws.Connect();
         Debug.Log("Connect to " + ws.Url);
+    }
+
+    void RideTrolley(){
+        Debug.Log("ride Trolley.");
     }
  
     void SendChatMessage(){
