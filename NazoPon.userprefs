@@ -1,0 +1,14 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\NazoPon_Scripts\GUIscript.js">
+    <Files>
+      <File FileName="Assets\NazoPon_Scripts\GUIscript.js" Line="10" Column="49" />
+      <File FileName="Assets\NazoPon_Scripts\QuizShowingScript.js" Line="11" Column="30" />
+      <File FileName="Assets\NazoPon_Scripts\VehicleMove.js" Line="85" Column="54" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
