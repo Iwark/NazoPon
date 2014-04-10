@@ -54,6 +54,9 @@ function OnGUI(){
 	GUI.Label( Rect(0, wy*23/32, wx*5/9, wy/4), chatLabel, chatStyle);
 }
 function Update(){
+	//会話ログを受信
+	
+
 	chatLabel = chats.join("\n");
 }
 
