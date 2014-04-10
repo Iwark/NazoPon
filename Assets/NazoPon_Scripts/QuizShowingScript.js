@@ -4,9 +4,11 @@ private var initial_time:float;
 private var problem_time:float;
 private var loop_time:float;
 
-private var quiz_text:String[];
-private var left_text:String[];
-private var right_text:String[];
+private var quiz_text:String="";
+private var left_text:String="";
+private var right_text:String="";
+
+private var isFirst:boolean;
 
 var problemStyle:GUIStyle;
 var choiceLStyle:GUIStyle;
@@ -21,65 +23,91 @@ private var script:VehicleMove; //VehicleMove.js
 private var wx = Screen.width;
 private var wy = Screen.height;
 
+//Webと通信
+private var wss:WebSocketScript;
+
+function Awake() {
+	wss = GameObject.Find("WebSocket").GetComponent(WebSocketScript);
+}
+
 function Start(){
 	vehicle = GameObject.Find("NazoPon");
 	script = vehicle.GetComponent(VehicleMove);
-	
-	quiz_text = new Array(script.PROBLEM_MAX);
-	left_text = new Array(script.PROBLEM_MAX);
-	right_text = new Array(script.PROBLEM_MAX);
-	
-	//問題文と選択肢を受信
-	for(var i=0; i<quiz_text.length; i++){
-		quiz_text[i] = "クイズです！　正解を選んでね！あいうえおあいうえお";
-		left_text[i] = "不正解不正解不正解不正解不正解不正解";
-		right_text[i] = "正解正解正解正解正解正解正解正解正解";
-	}
 	
 	initial_time = script.initial_time;
 	problem_time = script.problem_time;
 	loop_time = script.loop_time;
 	
 	countdownFontSize = countdownStyle.fontSize;
+	isFirst = true;
+}
+
+function Update (){
+	//問題文と選択肢を受信
+	var trolley:Dictionary.<String, Object> = Json.Deserialize(wss.trolley) as Dictionary.<String, Object>;
 	
+	var quiz_updated = trolley["updated_at"];
+	
+	if(!script.quiz_updated){
+		var quiz:Dictionary.<String, Object> = trolley["quiz"] as Dictionary.<String, Object>;
+		var quiz_contents:String = quiz["contents"];
+		var quiz_correct:String = quiz["correct_answer"];
+		var quiz_wrong:String = quiz["wrong_answer"];
+	
+		quiz_text = quiz_contents;
+		var r = Random.Range(-1.0,1.0);
+		if(isFirst || r>0){
+			left_text = quiz_wrong;
+			right_text = quiz_correct;
+			script.migi_correct = true;
+			isFirst = false;
+		}else{
+			left_text = quiz_correct;
+			right_text = quiz_wrong;
+			script.migi_correct = false;	
+		}
+
+		script.quiz_updated = true;
+	}
+	
+	//Debug.Log("quizcontents:"+quiz_contents);
 }
 
 function OnGUI () {
 	if(!script.gameover){
-		print(script.getTime());
-
+		var ctime = script.getTime();
 
 		var t = initial_time + script.loop_count*loop_time + problem_time;
-		if(t-problem_time < Time.time && Time.time < t){
-			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*5/32), quiz_text[script.loop_count], problemStyle);
-			GUI.Label( Rect(wx*1/18, wy*7/32, wx*7/18, wy*6/32), left_text[script.loop_count], choiceLStyle);
-			GUI.Label( Rect(wx*10/18, wy*7/32, wx*7/18, wy*6/32), right_text[script.loop_count], choiceRStyle);
+		if(t-problem_time < ctime && ctime < t){
+			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*5/32), quiz_text, problemStyle);
+			GUI.Label( Rect(wx*1/18, wy*7/32, wx*7/18, wy*6/32), left_text, choiceLStyle);
+			GUI.Label( Rect(wx*10/18, wy*7/32, wx*7/18, wy*6/32), right_text, choiceRStyle);
 		}
 		
-		if(t-5 < Time.time && Time.time < t-4){
+		if(t-5 < ctime && ctime < t-4){
 			countdownStyle.fontSize = countdownFontSize;
 			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*12/32), "5", countdownStyle);
 		}
-		if(t-4 < Time.time && Time.time < t-3){
+		else if(t-4 < ctime && ctime < t-3){
 			countdownStyle.fontSize = countdownFontSize+8;
 			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*12/32), "4", countdownStyle);
 		}
-		if(t-3 < Time.time && Time.time < t-2){
+		else if(t-3 < ctime && ctime < t-2){
 			countdownStyle.fontSize = countdownFontSize+16;
 			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*12/32), "3", countdownStyle);
 		}
-		if(t-2 < Time.time && Time.time < t-1){
+		else if(t-2 < ctime && ctime < t-1){
 			countdownStyle.fontSize  = countdownFontSize+32;
 			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*12/32), "2", countdownStyle);
 		}
-		if(t-1 < Time.time && Time.time < t){
+		else if(t-1 < ctime && ctime < t){
 			countdownStyle.fontSize  = countdownFontSize+48;
 			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*12/32), "1", countdownStyle);
 		}
 		
-		if(script.going_migi == script.migi_correct[script.loop_count]){
-			if( (t+4.5 < Time.time && Time.time < t+5.2)
-			 || (t+5.5 < Time.time && Time.time < t+6.2) ){
+		if(script.is_seikai){
+			if( (t+4.5 < ctime && ctime < t+5.2)
+			 || (t+5.5 < ctime && ctime < t+6.2) ){
 				GUI.Label( Rect(wx*2/18, wy*5/32, wx*14/18, wy*7/32), "正解！", seikaiStyle);
 			}
 		}

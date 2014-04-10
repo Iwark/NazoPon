@@ -44,11 +44,11 @@ function Update()
 
 	controller.Move(moveDirection * Time.deltaTime);
 	
-	if(transform.localPosition.x > 1.5){
+	if(transform.localPosition.x > 0.5){
 		//左右を送信(or正誤を送信)
-		print("migi");
-	}else if(transform.localPosition.x < -3.0){
+		//print("migi");
+	}else if(transform.localPosition.x < -2.0){
 		//左右を送信(or正誤を送信)
-		print("hidari");
+		//print("hidari");
 	}
 }

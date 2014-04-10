@@ -10,6 +10,10 @@ private var rail_angle = 70.0;
 
 private var scene_start_time:float;
 
+var quiz_updated:boolean = false;
+var is_seikai = false;
+var is_handan = false;
+
 var loop_count:int=0;
 private var curve_start_time = 0.0;
 private var curve_end_time = 0.0;
@@ -18,7 +22,7 @@ private var PLAYER_MAX = 7;
 static var PROBLEM_MAX = 15;
 
 var going_migi:boolean;
-var migi_correct:boolean[];
+var migi_correct:boolean;
 private var selected:boolean;
 var gameover:boolean;
 
@@ -32,16 +36,13 @@ var player_count:int = 0;
 
 function Start () {
 	//ここで、各問題の正答が左右どちらかを取得？
-	migi_correct = new Array(PROBLEM_MAX);
-	for(var i=0; i<migi_correct.length; i++){
-		migi_correct[i] = true;
-	}
+	migi_correct = true;
 
-	going_migi = true;
+	going_migi = false;
 	selected = false;
 	gameover = false;
 
-	var stage_y = migi_correct[0] ? 0 : -1000;
+	var stage_y = migi_correct ? 0 : -1000;
 	transform.position = new Vector3(0, stage_y, -speed*(problem_time+initial_time));
 
 	mainCamera = transform.Find("Main Camera").GetComponent("Camera");
@@ -89,25 +90,35 @@ function Update () {
 			transform.rotation = new Quaternion.Euler(0, direction2*rail_angle,0);
 			selected = true;
 		}
+		
+		//正誤格納&問題更新
+		if(ctime > curve_end_time+0.5 && !is_handan){
+			is_handan = true;
+			is_seikai = (migi_correct == going_migi);
+			quiz_updated = false;
+		}
 
 		var transY = 0.0;
 		var transZ = speed*Time.deltaTime;
 		
 		//正解時
-		if(migi_correct[loop_count] == going_migi){
+		if(is_seikai){
 			if(ctime >= initial_time + loop_time*(loop_count+1)){
 				loop_count += 1;
 				
 				if(loop_count < PROBLEM_MAX){
 
-					var stage_y = migi_correct[loop_count] ? 0 : -1000;
+					var stage_y = migi_correct ? 0 : -1000;
 	
 					transform.position = new Vector3(0, stage_y, -speed*problem_time);
 					transform.rotation = new Quaternion.Euler(0,0,0);
 					curve_start_time = initial_time + loop_count*loop_time + problem_time + after_select_time;
 					curve_end_time = curve_start_time + curve_time;
+					
 					selected = false;
-				
+					is_seikai = false;
+					is_handan = false;
+					
 				}else{
 					gameover = true;			
 				}
@@ -126,7 +137,8 @@ function Update () {
 				
 				if(fall_start_time +1.0 < ctime){
 					if(mainCamera.enabled){
-						if(migi_correct[loop_count]){ subCameraA.enabled = true; }else{ subCameraB.enabled = true; }
+						print(migi_correct);
+						if(migi_correct){ subCameraA.enabled = true; }else{ subCameraB.enabled = true; }
 						mainCamera.enabled = false;
 					}
 				}
