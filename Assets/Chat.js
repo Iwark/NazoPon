@@ -16,8 +16,13 @@ private var user_name;
 function Start(){
 	style = new GUIStyle();
 	style.fontSize = 11;
-	style.normal.textColor = Color.white;
-
+	style.normal.textColor = Color.black;
+	
+/*	var x = new Texture2D(1, 1);
+	x.SetPixel(0,0,Color.white);
+	
+	style.normal.background = x;
+*/
 	user_name = "(ユーザー)";
 }
 
