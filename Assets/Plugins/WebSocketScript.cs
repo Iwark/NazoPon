@@ -44,7 +44,14 @@ public class WebSocketScript : MonoBehaviour {
             Debug.Log(string.Format( "Receive {0}",s));
 
             Dictionary<string,object> dict = Json.Deserialize(s) as Dictionary<string,object>;
-            if(dict.ContainsKey("user")){
+            if(dict.ContainsKey("trolleys")){
+                Debug.Log(Json.Serialize(dict["trolleys"]));
+                trolleys = Json.Serialize(dict["trolleys"]);
+            }else if(dict.ContainsKey("trolley")){
+                trolley = Json.Serialize(dict["trolley"]);
+            }else if(dict.ContainsKey("message") || dict.ContainsKey("emotion")){
+                messages.Add(dict);
+            }else if(dict.ContainsKey("user")){
                 Dictionary<string,object> user = (Dictionary<string,object>)dict["user"];
                 if(user.ContainsKey("_id")){
                     user_id = (string)user["_id"];
@@ -54,13 +61,6 @@ public class WebSocketScript : MonoBehaviour {
 
                 sendData["get_trolleys"] = null;
                 ws.Send(Json.Serialize(sendData));
-            }else if(dict.ContainsKey("trolleys")){
-                Debug.Log(Json.Serialize(dict["trolleys"]));
-                trolleys = Json.Serialize(dict["trolleys"]);
-            }else if(dict.ContainsKey("trolley")){
-                trolley = Json.Serialize(dict["trolley"]);
-            }else if(dict.ContainsKey("message") || dict.ContainsKey("emotion")){
-                messages.Add(dict);
             }
         };
 
