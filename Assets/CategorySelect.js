@@ -16,19 +16,28 @@ text_make_room = GameObject.FindGameObjectWithTag("text_make_room");
 public var RoomCount : int;
 RoomCount = 2;//部屋の数を表示
 
+//トロッコ
 private var wss:WebSocketScript;
 private var trolleys:List.<System.Object>;
 
+//カテゴリリスト
+private var categories = ["スポーツ","数学理科","文学歴史","雑学","芸能","アニゲー"];
+
+//選択中のカテゴリ
+private var chosenCategory:int = 0;
+
 function Awake() {
 	wss = GameObject.Find("WebSocket").GetComponent(WebSocketScript);
+	Debug.Log(Screen.width);
+}
+
+function OnGUI() {
+	if(chosenCategory > 0) RenderTrolleys(chosenCategory);
 }
 
 function Start () {
 	guiLayer = Camera.main.GetComponent(GUILayer);
-	
-	//GameObject.Find("category0").SetActive(false);
 
-	//make_room.renderer.enabled = false;
 	var i: int=0;
 	while(i <7) {
 		make_room[i].SetActive(false);
@@ -41,184 +50,95 @@ function Start () {
 	}
 	text_make_room.SetActive(false);
 
-/*	while(j < RoomCount) {
-		GameObject.Find("room0").SetActive(false);
-		j++;
-	}
-*/
-
 }
 
 function Update () {
 
 	if(Input.GetMouseButtonDown(0)){
-	Debug.Log("touch!");
-	var i: int=0;
-	var j: int=0;
 	var trolley:Dictionary.<String, System.Object>;
 
 		//シーン上の全GUIElementに対して当たり判定
 		var hit = guiLayer.HitTest (Input.mousePosition);
 		if (Input.GetMouseButtonDown (0) && hit != null) {
-			//イベント処理
-			print (hit.name);
-			
-			//Color
-			//hit.collider.renderer.material.color = Color(255, 120, 120, 1.0f);
-			
-			if(hit.name.Equals("Button0")) {
-
-				GetTrolleys();
-
-				if(trolleys.Count > 0){
-					trolley = trolleys[0] as Dictionary.<String, System.Object>;
-					Debug.Log("category :" + trolley["category"]);
+			var buttons = ["Button1","Button2","Button3","Button4","Button5","Button6","Button0"];
+			for(var i:int=0; i<buttons.length; i++){
+				if(hit.name.Equals(buttons[i])){
+					GetTrolleys();
+					chosenCategory = i+1;
+					// wss.RideTrolley("3",null);
 				}
-				while(i <7) {
-					make_room[i].SetActive(false);
-					i++;
-				}
-				while(j<RoomCount) {
-					rooms[j].SetActive(true);
-					j++;
-				}
-				text_make_room.SetActive(true);
-				
-				
-
-
-				//make_room.SetActive(false);
-				//rooms.SetActive(true);
 			}
-			if(hit.name.Equals("Button1")) {
-				while(i <7) {
-					make_room[i].SetActive(false);
-					i++;
-				}
-				while(j<RoomCount) {
-					rooms[j].SetActive(true);
-					j++;
-				}
-				text_make_room.SetActive(true);
-					//make_room.SetActive(false);
-					//rooms.SetActive(true);
-			}
-			if(hit.name.Equals("Button2")) {
-				while(i <7) {
-					make_room[i].SetActive(false);
-					i++;
-				}
-				while(j<RoomCount) {
-					rooms[j].SetActive(true);
-					j++;
-				}
-				text_make_room.SetActive(true);
-				//make_room.SetActive(false);
-				//rooms.SetActive(true);
-			}
-			if(hit.name.Equals("Button3")) {
-				while(i <7) {
-					make_room[i].SetActive(false);
-					i++;
-				}
-				while(j<RoomCount) {
-					rooms[j].SetActive(true);
-					j++;
-				}
-				text_make_room.SetActive(true);
-				//make_room.SetActive(false);
-				//rooms.SetActive(true);
-			}
-			if(hit.name.Equals("Button4")) {
-				while(i <7) {
-					make_room[i].SetActive(false);
-					i++;
-				}
-				while(j<RoomCount) {
-					rooms[j].SetActive(true);
-					j++;
-				}
-				text_make_room.SetActive(true);
-				//make_room.SetActive(false);
-				//rooms.SetActive(true);
-			}
-			if(hit.name.Equals("Button5")) {
-				while(i <7) {
-					make_room[i].SetActive(false);
-					i++;
-				}
-				while(j<RoomCount) {
-					rooms[j].SetActive(true);
-					j++;
-				}
-				text_make_room.SetActive(true);
-				//make_room.SetActive(false);
-				//rooms.SetActive(true);
-			}
-			if(hit.name.Equals("Button6")) {
-				while(i <7) {
-					make_room[i].SetActive(false);
-					i++;
-				}
-				while(j<RoomCount) {
-					rooms[j].SetActive(true);
-					j++;
-				}
-				text_make_room.SetActive(true);
-				//make_room.SetActive(false);
-				//rooms.SetActive(true);
-			}
-			if(hit.name.Equals("Button7")) {
-				while(i <7) {
-					make_room[i].SetActive(true);
-					i++;
-				}
-				while(j<6) {
-					rooms[j].SetActive(false);
-					j++;
-				}
-				text_make_room.SetActive(false);
-				//make_room.SetActive(false);
-				//rooms.SetActive(true);
-			}
-			if(hit.tag.Equals("rooms")){
-				GetTrolleys();
-
-				if(trolleys.Count > 0){
-					trolley = trolleys[0] as Dictionary.<String, System.Object>;
-					wss.RideTrolley(trolley["category"],trolley["_id"]);
-				}
-				Application.LoadLevel("Roading");
-
-			}
+			// if(hit.name.Equals("Button0")) {
+			// 	while(i <7) {
+			// 		make_room[i].SetActive(false);
+			// 		i++;
+			// 	}
+			// 	while(j<RoomCount) {
+			// 		rooms[j].SetActive(true);
+			// 		j++;
+			// 	}
+			// 	text_make_room.SetActive(true);
+			// }
+			// if(hit.name.Equals("Button7")) {
+			// 	while(i <7) {
+			// 		make_room[i].SetActive(true);
+			// 		i++;
+			// 	}
+			// 	while(j<6) {
+			// 		rooms[j].SetActive(false);
+			// 		j++;
+			// 	}
+			// 	text_make_room.SetActive(false);
+			// }
+			// if(hit.tag.Equals("rooms")){
+			// 	GetTrolleys();
+			// 	if(trolleys.Count > 0){
+			// 		trolley = trolleys[0] as Dictionary.<String, System.Object>;
+			// 		wss.RideTrolley(trolley["category"],trolley["_id"]);
+			// 	}
+			// 	Application.LoadLevel("Roading");
+			// }
 			if(hit.tag.Equals("make_room")){
-				wss.RideTrolley("スポーツ",null);
-				Application.LoadLevel("Roading");
-
+			 	wss.RideTrolley("1",null);
+			 	Application.LoadLevel("Roading");
 			}
 		}
-	/*
-		var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		var hitinfo : RaycastHit;
-		if(Physics.Raycast(ray, hitinfo, 1000f)){
-		var gameObject = hitinfo.collider.gameObject;
-		Debug.Log(gameObject.tag);
-		*/
-
-
-		
 	}
+}
+
+function RenderTrolleys(category){
+	var category_trolleys:List.< Dictionary.<String, Object> > = new List.< Dictionary.<String, Object> >();
+	for(var i:int = 0; i<trolleys.Count; i++){
+		var ctr:Dictionary.<String, Object> = trolleys[i] as Dictionary.<String, Object>;
+		var ctr_num:int = ctr["category"];
+		if(category == 7 || ctr_num == category) category_trolleys.Add(ctr);
+	}
+	GUI.BeginScrollView(
+		Rect(Screen.width/32, Screen.height*6/10, Screen.width - Screen.width/16, Screen.height*4/10), 
+		Vector2(0, 0), 
+		Rect(0, 0, Screen.width - Screen.width/16, Screen.height*4/10)
+	);
+
+	GUILayout.BeginVertical(GUILayout.ExpandHeight(true));
+	
+	for(var t:int = 0; t<category_trolleys.Count; t++){
+
+		if(t%3 == 0) GUILayout.BeginHorizontal();
+
+		var tr:Dictionary.<String, System.Object> = category_trolleys[t];
+		var category_num:int = tr["category"];
+
+		if(GUILayout.Button(categories[category_num-1], [GUILayout.MinHeight(Screen.width/4), GUILayout.ExpandWidth(false)])){
+			Debug.Log("select object pressed : " + tr["_id"]);
+		}
+
+		if(t%3 == 2 || t == category_trolleys.Count-1) GUILayout.EndHorizontal();
+
+	}
+    GUILayout.EndVertical();
+    GUI.EndScrollView();
 }
 
 function GetTrolleys(){
-	if(!trolleys || trolleys.Count == 0){
-		trolleys = Json.Deserialize(wss.trolleys) as List.<System.Object>;
-	}
+	trolleys = Json.Deserialize(wss.trolleys) as List.<System.Object>;
 }
-
-/*function OnGUI {
-	var user_name : string[];
-	
-	GUI.Label(Rect(0.5, 0.5, 0.5, 0.5), "Hello!!");
-}*/
-
