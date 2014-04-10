@@ -8,6 +8,9 @@ public class WebSocketScript : MonoBehaviour {
  
     //private myJS jsScript;
 
+    public object trolleys;
+    private string user_id;
+
     void Awake () {
         //jsScript = this.GetComponent<myJS>();
         //Debug.Log("jsScript:"+jsScript);
@@ -16,6 +19,7 @@ public class WebSocketScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        DontDestroyOnLoad(this);
         Connect();
     }
  
@@ -60,11 +64,18 @@ public class WebSocketScript : MonoBehaviour {
 
             Dictionary<string,object> dict = Json.Deserialize(s) as Dictionary<string,object>;
             if(dict.ContainsKey("user")){
+                Dictionary<string,object> user = (Dictionary<string,object>)dict["user"];
+                if(user.ContainsKey("_id")){
+                    user_id = (string)user["_id"];
+                }
+
                 Dictionary<string, string> sendData = new Dictionary<string, string>();
 
                 sendData["get_trolleys"] = null;
                 ws.Send(Json.Serialize(sendData));
             }else if(dict.ContainsKey("trolleys")){
+                Debug.Log(Json.Serialize(dict["trolleys"]));
+                trolleys = Json.Serialize(dict["trolleys"]);
                 //Debug.Log("showMessage2");
                 //jsScript.showMessage2();
                 //Debug.Log("showMessage");
@@ -100,8 +111,16 @@ public class WebSocketScript : MonoBehaviour {
         Debug.Log("Connect to " + ws.Url);
     }
 
-    void RideTrolley(){
+    public void RideTrolley(string category, string trolley_id){
         Debug.Log("ride Trolley.");
+        Dictionary<string, object> sendData = new Dictionary<string, object>();
+        Dictionary<string, string> rideData = new Dictionary<string, string>();
+        rideData["category"] = category;
+        if(trolley_id != null) rideData["_id"] = trolley_id;
+        sendData["ride_trolley"] = rideData;
+        sendData["user_id"] = user_id;
+        Debug.Log("senddata: "+Json.Serialize(sendData));
+        ws.Send(Json.Serialize(sendData));
     }
  
     void SendChatMessage(){
