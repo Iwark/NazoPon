@@ -4,8 +4,9 @@ var clapButton:Texture2D;
 var angerButton:Texture2D;
 var IknowButton:Texture2D;
 var IdontknowButton:Texture2D;
+var blackTexture:Texture2D;
 
-private var style:GUIStyle;
+var chatStyle:GUIStyle;
 
 private var chats = new Array("\n","\n","\n","\n");
 private var chatLabel:String;
@@ -13,10 +14,6 @@ private var chatLabel:String;
 private var user_name;
 
 function Start(){
-	style = new GUIStyle();
-	style.fontSize = 11;
-	style.normal.textColor = Color.white;
-
 	user_name = "(ユーザー名)";
 }
 
@@ -37,7 +34,12 @@ function OnGUI(){
 		addChat(user_name + ":\n分からん…");
 	}
 	
-	GUI.Label( Rect(0, wy*23/32, wx*5/9, wy/4), chatLabel, style);
+	var origA = GUI.color.a;
+	GUI.color.a = 0.6f;
+	GUI.DrawTexture( Rect(0, wy*23/32, wx*5/9, wy/4), blackTexture);
+	GUI.color.a = origA;
+	
+	GUI.Label( Rect(0, wy*23/32, wx*5/9, wy/4), chatLabel, chatStyle);
 }
 function Update(){
 	chatLabel = chats.join("\n");
