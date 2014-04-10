@@ -4,6 +4,9 @@ import MiniJSON;
 import System.Collections.Generic;
 
 var guiLayer : GUILayer;
+
+
+
 public var rooms : GameObject[];
 rooms = GameObject.FindGameObjectsWithTag("rooms");
 public var make_room : GameObject[];
@@ -83,12 +86,16 @@ function Update () {
 					j++;
 				}
 				text_make_room.SetActive(true);
+				
+				RoomButton();
+
 				/*while(j<RoomCount){
 					GameObject.Find("room"+j).SetActive(true);
 					j++;
 				}*/
-
-
+				/*if(GUI.Button(Rect(30, 280, 50, 50), "Room1")){
+					Debug.Log("touch!");
+				}*/
 				//make_room.SetActive(false);
 				//rooms.SetActive(true);
 			}
@@ -212,6 +219,7 @@ function Update () {
 
 		
 	}
+
 }
 
 function GetTrolleys(){
@@ -219,6 +227,14 @@ function GetTrolleys(){
 		trolleys = Json.Deserialize(wss.trolleys) as List.<System.Object>;
 	}
 }
+
+function RoomButton () {
+	if(GUI.Button(Rect(30, 280, 50, 50), "Room1")){
+			Debug.Log("GUI!");
+	}
+	Debug.Log("RoomButton!");
+}
+
 
 /*function OnGUI {
 	var user_name : string[];
