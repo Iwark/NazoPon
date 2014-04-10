@@ -111,11 +111,12 @@ public class WebSocketScript : MonoBehaviour {
         Debug.Log("Connect to " + ws.Url);
     }
 
-    public void RideTrolley(string category){
+    public void RideTrolley(string category, string trolley_id){
         Debug.Log("ride Trolley.");
         Dictionary<string, object> sendData = new Dictionary<string, object>();
         Dictionary<string, string> rideData = new Dictionary<string, string>();
         rideData["category"] = category;
+        if(trolley_id != null) rideData["_id"] = trolley_id;
         sendData["ride_trolley"] = rideData;
         sendData["user_id"] = user_id;
         Debug.Log("senddata: "+Json.Serialize(sendData));

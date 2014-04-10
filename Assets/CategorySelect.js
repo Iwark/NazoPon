@@ -17,10 +17,10 @@ public var RoomCount : int;
 RoomCount = 2;//部屋の数を表示
 
 private var wss:WebSocketScript;
+private var trolleys:List.<System.Object>;
 
 function Awake() {
 	wss = GameObject.Find("WebSocket").GetComponent(WebSocketScript);
-	Debug.Log("trolleys:"+wss.trolleys);
 }
 
 function Start () {
@@ -55,6 +55,7 @@ function Update () {
 	Debug.Log("touch!");
 	var i: int=0;
 	var j: int=0;
+	var trolley:Dictionary.<String, System.Object>;
 
 		//シーン上の全GUIElementに対して当たり判定
 		var hit = guiLayer.HitTest (Input.mousePosition);
@@ -66,11 +67,11 @@ function Update () {
 			//hit.collider.renderer.material.color = Color(255, 120, 120, 1.0f);
 			
 			if(hit.name.Equals("Button0")) {
-				Debug.Log(wss.trolleys);
-				var trolleys:List.<System.Object> = Json.Deserialize(wss.trolleys) as List.<System.Object>;
-				// Debug.Log("x");
+
+				GetTrolleys();
+
 				if(trolleys.Count > 0){
-					var trolley = trolleys[0] as Dictionary.<String, System.Object>;
+					trolley = trolleys[0] as Dictionary.<String, System.Object>;
 					Debug.Log("category :" + trolley["category"]);
 				}
 				while(i <7) {
@@ -181,11 +182,17 @@ function Update () {
 				//rooms.SetActive(true);
 			}
 			if(hit.tag.Equals("rooms")){
+				GetTrolleys();
+
+				if(trolleys.Count > 0){
+					trolley = trolleys[0] as Dictionary.<String, System.Object>;
+					wss.RideTrolley(trolley["category"],trolley["_id"]);
+				}
 				Application.LoadLevel("Roading");
 
 			}
 			if(hit.tag.Equals("make_room")){
-				wss.RideTrolley("新入り");
+				wss.RideTrolley("スポーツ",null);
 				Application.LoadLevel("Roading");
 
 			}
@@ -200,6 +207,12 @@ function Update () {
 
 
 		
+	}
+}
+
+function GetTrolleys(){
+	if(!trolleys || trolleys.Count == 0){
+		trolleys = Json.Deserialize(wss.trolleys) as List.<System.Object>;
 	}
 }
 
