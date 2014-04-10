@@ -8,8 +8,9 @@ public class WebSocketScript : MonoBehaviour {
 
     public object trolleys;
     public object trolley;
-    private string user_id;
+    public string user_id;
     public bool is_connected;
+    public List<Dictionary<string, object>> messages = new List<Dictionary<string, object>>();
 
     void Awake () {
     }
@@ -43,7 +44,14 @@ public class WebSocketScript : MonoBehaviour {
             Debug.Log(string.Format( "Receive {0}",s));
 
             Dictionary<string,object> dict = Json.Deserialize(s) as Dictionary<string,object>;
-            if(dict.ContainsKey("user")){
+            if(dict.ContainsKey("trolleys")){
+                Debug.Log(Json.Serialize(dict["trolleys"]));
+                trolleys = Json.Serialize(dict["trolleys"]);
+            }else if(dict.ContainsKey("trolley")){
+                trolley = Json.Serialize(dict["trolley"]);
+            }else if(dict.ContainsKey("message") || dict.ContainsKey("emotion")){
+                messages.Add(dict);
+            }else if(dict.ContainsKey("user")){
                 Dictionary<string,object> user = (Dictionary<string,object>)dict["user"];
                 if(user.ContainsKey("_id")){
                     user_id = (string)user["_id"];
@@ -53,11 +61,6 @@ public class WebSocketScript : MonoBehaviour {
 
                 sendData["get_trolleys"] = null;
                 ws.Send(Json.Serialize(sendData));
-            }else if(dict.ContainsKey("trolleys")){
-                Debug.Log(Json.Serialize(dict["trolleys"]));
-                trolleys = Json.Serialize(dict["trolleys"]);
-            }else if(dict.ContainsKey("trolley")){
-                trolley = Json.Serialize(dict["trolley"]);
             }
         };
 
@@ -100,7 +103,7 @@ public class WebSocketScript : MonoBehaviour {
         ws.Send(Json.Serialize(sendData));
     }
 
-    public void moveCharacter(float x, float y, float z){
+    public void MoveCharacter(float x, float y, float z){
         Debug.Log("move Character.");
         Dictionary<string, object> sendData = new Dictionary<string, object>();
         Dictionary<string, string> moveData = new Dictionary<string, string>();
@@ -113,7 +116,7 @@ public class WebSocketScript : MonoBehaviour {
         ws.Send(Json.Serialize(sendData));
     }
 
-    public void SendMessage(string message, int emotion){
+    public void SendMessage(string message, string emotion){
         Debug.Log("send Message.");
         Dictionary<string, object> sendData = new Dictionary<string, object>();
         Dictionary<string, string> mesData = new Dictionary<string, string>();
