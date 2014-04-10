@@ -99,4 +99,51 @@ public class WebSocketScript : MonoBehaviour {
         Debug.Log("senddata: "+Json.Serialize(sendData));
         ws.Send(Json.Serialize(sendData));
     }
+
+    public void moveCharacter(float x, float y, float z){
+        Debug.Log("move Character.");
+        Dictionary<string, object> sendData = new Dictionary<string, object>();
+        Dictionary<string, string> moveData = new Dictionary<string, string>();
+        moveData["x"] = x.ToString();
+        moveData["y"] = y.ToString();
+        moveData["z"] = z.ToString();
+        moveData["user_id"] = user_id;
+        sendData["move_character"] = moveData;
+        Debug.Log("senddata: "+Json.Serialize(sendData));
+        ws.Send(Json.Serialize(sendData));
+    }
+
+    public void SendMessage(string message, int emotion){
+        Debug.Log("send Message.");
+        Dictionary<string, object> sendData = new Dictionary<string, object>();
+        Dictionary<string, string> mesData = new Dictionary<string, string>();
+        if(message != null) mesData["message"] = message;
+        if(emotion != null) mesData["emotion"] = emotion.ToString();
+        mesData["user_id"] = user_id;
+        sendData["send_message"] = mesData;
+        Debug.Log("senddata: "+Json.Serialize(sendData));
+        ws.Send(Json.Serialize(sendData));
+    }
+
+    public void ReplyAnswer(string result){
+        Debug.Log("reply Answer.");
+        Dictionary<string, object> sendData = new Dictionary<string, object>();
+        Dictionary<string, string> ansData = new Dictionary<string, string>();
+        ansData["result"] = result;
+        ansData["user_id"] = user_id;
+        sendData["reply_answer"] = ansData;
+        Debug.Log("senddata: "+Json.Serialize(sendData));
+        ws.Send(Json.Serialize(sendData));
+    }
+
+    public void Continue(string result){
+        Debug.Log("Continue.");
+        Dictionary<string, object> sendData = new Dictionary<string, object>();
+        Dictionary<string, string> resData = new Dictionary<string, string>();
+        resData["result"] = result;
+        resData["user_id"] = user_id;
+        sendData["is_continue"] = resData;
+        Debug.Log("senddata: "+Json.Serialize(sendData));
+        ws.Send(Json.Serialize(sendData));
+    }
 }
