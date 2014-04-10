@@ -63,7 +63,7 @@ function Update () {
 		//シーン上の全GUIElementに対して当たり判定
 		var hit = guiLayer.HitTest (Input.mousePosition);
 		if (Input.GetMouseButtonDown (0) && hit != null) {
-			var buttons = ["Button1","Button2","Button3","Button4","Button5","Button6","Button0"];
+			var buttons = ["Button1","Button2","Button3","Button4","Button5","Button6","Button0","Button7"];
 			for(var i:int=0; i<buttons.length; i++){
 				if(hit.name.Equals(buttons[i])){
 					GetTrolleys();
@@ -101,21 +101,31 @@ function Update () {
 			// 	}
 			// 	Application.LoadLevel("Roading");
 			// }
-			if(hit.tag.Equals("make_room")){
-			 	wss.RideTrolley("1",null);
-			 	Application.LoadLevel("Roading");
-			}
+			// if(hit.tag.Equals("make_room")){
+			//  	wss.RideTrolley("1",null);
+			//  	Application.LoadLevel("Roading");
+			// }
 		}
 	}
 }
 
 function RenderTrolleys(category){
 	var category_trolleys:List.< Dictionary.<String, Object> > = new List.< Dictionary.<String, Object> >();
-	for(var i:int = 0; i<trolleys.Count; i++){
-		var ctr:Dictionary.<String, Object> = trolleys[i] as Dictionary.<String, Object>;
-		var ctr_num:int = ctr["category"];
-		if(category == 7 || ctr_num == category) category_trolleys.Add(ctr);
+	if(category == 8){
+		for(var c:int = 0; c<6; c++){
+			var ctrr:Dictionary.<String, Object> = new Dictionary.<String, Object>();
+			ctrr["category"] = c+1;
+			ctrr["_id"] = null;
+			category_trolleys.Add(ctrr);
+		}
+	}else{
+		for(var i:int = 0; i<trolleys.Count; i++){
+			var ctr:Dictionary.<String, Object> = trolleys[i] as Dictionary.<String, Object>;
+			var ctr_num:int = ctr["category"];
+			if(category == 7 || ctr_num == category) category_trolleys.Add(ctr);
+		}
 	}
+
 	GUI.BeginScrollView(
 		Rect(Screen.width/32, Screen.height*6/10, Screen.width - Screen.width/16, Screen.height*4/10), 
 		Vector2(0, 0), 
@@ -131,8 +141,7 @@ function RenderTrolleys(category){
 		var tr:Dictionary.<String, System.Object> = category_trolleys[t];
 		var category_num:int = tr["category"];
 
-		if(GUILayout.Button(categories[category_num-1], [GUILayout.MinHeight(Screen.width/4), GUILayout.ExpandWidth(false)])){
-			Debug.Log("select object pressed : " + tr["_id"]);
+		if(GUILayout.Button(categories[category_num-1], [GUILayout.MinWidth(Screen.width*3/10),GUILayout.MinHeight(Screen.width/4), GUILayout.ExpandWidth(false)])){
 			wss.RideTrolley(tr["category"].ToString(),tr["_id"]);
 			Application.LoadLevel("MainScene");
 		}
