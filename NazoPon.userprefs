@@ -1,8 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\CategorySelect.js">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Chat.js">
     <Files>
-      <File FileName="Assets\CategorySelect.js" Line="51" Column="1" />
+      <File FileName="Assets\CategorySelect.js" Line="1" Column="1" />
+      <File FileName="Assets\RoomEntry.js" Line="1" Column="1" />
+      <File FileName="Assets\NazoPon_Scripts\VehicleMove.js" Line="1" Column="1" />
+      <File FileName="Assets\NazoPon_Scripts\GUIscript.js" Line="1" Column="1" />
+      <File FileName="Assets\Continue.js" Line="1" Column="1" />
+      <File FileName="Assets\Chat.js" Line="21" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
