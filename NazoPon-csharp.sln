@@ -5,6 +5,8 @@ Project("{825A6F7F-5AD2-1F22-7308-FF0DB0DCDE7A}") = "NazoPon", "Assembly-CSharp-
 EndProject
 Project("{825A6F7F-5AD2-1F22-7308-FF0DB0DCDE7A}") = "NazoPon", "Assembly-CSharp-vs.csproj", "{386042E5-9A13-FDEB-C773-AD246660C0BF}"
 EndProject
+Project("{825A6F7F-5AD2-1F22-7308-FF0DB0DCDE7A}") = "NazoPon", "Assembly-CSharp-Editor-vs.csproj", "{4F25E068-C416-7066-1B1E-765E53111C12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,11 +21,15 @@ Global
 		{386042E5-9A13-FDEB-C773-AD246660C0BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{386042E5-9A13-FDEB-C773-AD246660C0BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{386042E5-9A13-FDEB-C773-AD246660C0BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F25E068-C416-7066-1B1E-765E53111C12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F25E068-C416-7066-1B1E-765E53111C12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F25E068-C416-7066-1B1E-765E53111C12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F25E068-C416-7066-1B1E-765E53111C12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-													GlobalSection(MonoDevelopProperties) = preSolution
+																				GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1

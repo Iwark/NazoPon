@@ -1,42 +1,74 @@
 ﻿#pragma strict
 private var speed = 50.0;
 private var curve_start_pos = 90.0;
-private var initial_time = 2.0;
-private var problem_time = 10.0;
+var initial_time = 2.0;
+var problem_time = 10.0;
 private var after_select_time = curve_start_pos/speed;
 private var curve_time = 51.8/speed;
-private var loop_time = 18.0;
+var loop_time = 18.0;
 private var rail_angle = 70.0;
 	
-private var loop_count:int;
+var loop_count:int=0;
 private var curve_start_time = 0.0;
 private var curve_end_time = 0.0;
 
-private var going_migi:boolean;
-private var migi_correct:boolean;
+private var PLAYER_MAX = 7;
+private var PROBLEM_MAX = 15;
+
+var going_migi:boolean;
+var migi_correct:boolean[];
 private var selected:boolean;
-private var gameover:boolean;
+var gameover:boolean;
+
+private var mainCamera:Camera;
+private var subCameraA:Camera;
+private var subCameraB:Camera;
+
+var playerBoy:GameObject;
+var players:GameObject[];
+var player_count:int = 0;
 
 function Start () {
 	//ここで、各問題の正答が左右どちらかを取得？
+	migi_correct = new Array(PROBLEM_MAX);
+	for(var i=0; i<migi_correct.length; i++){
+		migi_correct[i] = true;
+	}
 
 	going_migi = false;
-	migi_correct = true;
 	selected = false;
 	gameover = false;
 
-	var stage_y = migi_correct ? 0 : -1000;
+	var stage_y = migi_correct[0] ? 0 : -1000;
 	transform.position = new Vector3(0, stage_y, -speed*(problem_time+initial_time));
 
-	var camera1:Camera = transform.Find("Main Camera").GetComponent("Camera");
-	var camera2:Camera = GameObject.Find("SubCameraA").GetComponent("Camera");
-	camera1.enabled = true;
-	camera2.enabled = false;
+	mainCamera = transform.Find("Main Camera").GetComponent("Camera");
+	subCameraA = GameObject.Find("SubCameraA").GetComponent("Camera");
+	subCameraB = GameObject.Find("SubCameraB").GetComponent("Camera");
+	mainCamera.enabled = true;
+	subCameraA.enabled = false;
+	subCameraB.enabled = false;
 
 	loop_count=0;
 	curve_start_time = initial_time + loop_count*loop_time + problem_time + after_select_time;
 	curve_end_time = curve_start_time + curve_time;
 
+	players = new Array(7);
+	addPlayer();
+	//addPlayer();
+	//addPlayer();
+	//addPlayer();
+	//addPlayer();
+	//addPlayer();
+	//addPlayer();
+}
+
+function addPlayer(){
+	if(player_count < PLAYER_MAX){
+		players[player_count] = Instantiate(playerBoy, transform.position + Vector3(Random.Range(-2.0f,2.0f), 8, -(6.5+1.5*player_count)), Quaternion.identity);
+		players[player_count].transform.parent = transform;
+		player_count++;
+	}
 }
 
 function Update () {
@@ -57,16 +89,23 @@ function Update () {
 		var transZ = speed*Time.deltaTime;
 		
 		//正解時
-		if(migi_correct == going_migi){
+		if(migi_correct[loop_count] == going_migi){
 			if(Time.time >= initial_time + loop_time*(loop_count+1)){
-				var stage_y = migi_correct ? 0 : -1000;
-	
-				transform.position = new Vector3(0, stage_y, -speed*problem_time);
-				transform.rotation = new Quaternion.Euler(0,0,0);
 				loop_count += 1;
-				curve_start_time = initial_time + loop_count*loop_time + problem_time + after_select_time;
-				curve_end_time = curve_start_time + curve_time;
-				selected = false;
+				
+				if(loop_count < PROBLEM_MAX){
+
+					var stage_y = migi_correct[loop_count] ? 0 : -1000;
+	
+					transform.position = new Vector3(0, stage_y, -speed*problem_time);
+					transform.rotation = new Quaternion.Euler(0,0,0);
+					curve_start_time = initial_time + loop_count*loop_time + problem_time + after_select_time;
+					curve_end_time = curve_start_time + curve_time;
+					selected = false;
+				
+				}else{
+					gameover = true;			
+				}
 			}
 		
 		//不正解時
@@ -81,11 +120,9 @@ function Update () {
 				transZ = (speed * Mathf.Cos(theta) + 21 * t * Mathf.Sin(theta))*Time.deltaTime;
 				
 				if(fall_start_time +1.0 < Time.time){
-					var camera1:Camera = transform.Find("Main Camera").GetComponent("Camera");
-					var camera2:Camera = GameObject.Find("SubCameraA").GetComponent("Camera");
-					if(camera1.enabled){
-						camera2.enabled = true;
-						camera1.enabled = false;
+					if(mainCamera.enabled){
+						if(migi_correct[loop_count]){ subCameraA.enabled = true; }else{ subCameraB.enabled = true; }
+						mainCamera.enabled = false;
 					}
 				}
 				

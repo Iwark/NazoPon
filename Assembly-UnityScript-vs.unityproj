@@ -47,9 +47,14 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\NazoPon_Scripts\GUIscript.js" />
+     <Compile Include="Assets\NazoPon_Scripts\PlayerControl.js" />
      <Compile Include="Assets\NazoPon_Scripts\QuizShowingScript.js" />
      <Compile Include="Assets\NazoPon_Scripts\VehicleMove.js" />
+     <None Include="Assets\Scripts\IOS Toon Shaders\Toon Detail.shader" />
      <None Include="Assets\Standard Assets\Water (Basic)\Sources\Shaders\FX-Water Simple.shader" />
+     <None Include="Assets\Scripts\IOS Toon Shaders\Outlined ToonBase.shader" />
+     <None Include="Assets\Scripts\IOS Toon Shaders\ToonBase.shader" />
+     <None Include="Assets\Scripts\IOS Toon Shaders\Outlined ToonDetail.shader" />
  <Reference Include="Assembly-UnityScript-firstpass">
  <HintPath>Library\ScriptAssemblies\Assembly-UnityScript-firstpass.dll</HintPath>
  </Reference>
