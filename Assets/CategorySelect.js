@@ -11,7 +11,6 @@ public var rooms : GameObject[];
 rooms = GameObject.FindGameObjectsWithTag("rooms");
 public var make_room : GameObject[];
 make_room = GameObject.FindGameObjectsWithTag("make_room");
-
 public var text_make_room : GameObject;
 text_make_room = GameObject.FindGameObjectWithTag("text_make_room");
 
