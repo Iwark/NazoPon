@@ -13,6 +13,7 @@ private var scene_start_time:float;
 var quiz_updated:boolean = false;
 var is_seikai = false;
 var is_handan = false;
+var is_cameraA = false;
 
 var loop_count:int=0;
 private var curve_start_time = 0.0;
@@ -95,6 +96,7 @@ function Update () {
 		if(ctime > curve_end_time+0.5 && !is_handan){
 			is_handan = true;
 			is_seikai = (migi_correct == going_migi);
+			is_cameraA = migi_correct;
 			quiz_updated = false;
 		}
 
@@ -138,7 +140,7 @@ function Update () {
 				if(fall_start_time +1.0 < ctime){
 					if(mainCamera.enabled){
 						print(migi_correct);
-						if(migi_correct){ subCameraA.enabled = true; }else{ subCameraB.enabled = true; }
+						if(is_cameraA){ subCameraA.enabled = true; }else{ subCameraB.enabled = true; }
 						mainCamera.enabled = false;
 					}
 				}
