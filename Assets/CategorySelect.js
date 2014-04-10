@@ -58,7 +58,7 @@ function Start () {
 function Update () {
 
 	if(Input.GetMouseButtonDown(0)){
-	var trolley:Dictionary.<String, System.Object>;
+		var trolley:Dictionary.<String, System.Object>;
 
 		//シーン上の全GUIElementに対して当たり判定
 		var hit = guiLayer.HitTest (Input.mousePosition);
@@ -133,6 +133,8 @@ function RenderTrolleys(category){
 
 		if(GUILayout.Button(categories[category_num-1], [GUILayout.MinHeight(Screen.width/4), GUILayout.ExpandWidth(false)])){
 			Debug.Log("select object pressed : " + tr["_id"]);
+			wss.RideTrolley(tr["category"].ToString(),tr["_id"]);
+			Application.LoadLevel("MainScene");
 		}
 
 		if(t%3 == 2 || t == category_trolleys.Count-1) GUILayout.EndHorizontal();

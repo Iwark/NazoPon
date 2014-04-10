@@ -7,6 +7,7 @@ using MiniJSON;
 public class WebSocketScript : MonoBehaviour {
 
     public object trolleys;
+    public object trolley;
     private string user_id;
     public bool is_connected;
 
@@ -55,6 +56,8 @@ public class WebSocketScript : MonoBehaviour {
             }else if(dict.ContainsKey("trolleys")){
                 Debug.Log(Json.Serialize(dict["trolleys"]));
                 trolleys = Json.Serialize(dict["trolleys"]);
+            }else if(dict.ContainsKey("trolley")){
+                trolley = Json.Serialize(dict["trolley"]);
             }
         };
 
