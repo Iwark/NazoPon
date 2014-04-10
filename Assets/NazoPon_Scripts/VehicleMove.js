@@ -43,14 +43,14 @@ var trolley:Dictionary.<String, Object>;
 function Awake() {
 	wss = GameObject.Find("WebSocket").GetComponent(WebSocketScript);
 	trolley = Json.Deserialize(wss.trolley) as Dictionary.<String, Object>;
-	users = trolley["users"];
+	//users = trolley["users"];
 }
 
 function Start () {
 	//ここで、各問題の正答が左右どちらかを取得？
 	migi_correct = true;
 
-	going_migi = false;
+	going_migi = true;
 	selected = false;
 	gameover = false;
 

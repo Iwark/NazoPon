@@ -13,6 +13,8 @@ private var chatLabel:String;
 
 private var user_name;
 
+private var prev_messageCount:int = 0;
+
 //Webと通信
 private var wss:WebSocketScript;
 
@@ -29,19 +31,19 @@ function OnGUI(){
 	var wy = Screen.height;
 	
 	if( GUI.Button( Rect(wx*5/9, wy*27/32, wx*2/9, wy/8), clapButton) ){
-		addChat(user_name + ":\nありがとう！");
+		//addChat(user_name + ":\nありがとう！");
 		wss.SendMessage(null,"1");
 	}
 	if( GUI.Button( Rect(wx*7/9, wy*27/32, wx*2/9, wy/8), angerButton) ){
-		addChat(user_name + ":\nおいおい！");
+		//addChat(user_name + ":\nおいおい！");
 		wss.SendMessage(null,"2");
 	}
 	if( GUI.Button( Rect(wx*5/9, wy*23/32, wx*2/9, wy/8), IknowButton) ){
-		addChat(user_name + ":\n自信あり！");
+		//addChat(user_name + ":\n自信あり！");
 		wss.SendMessage(null,"3");
 	}
 	if( GUI.Button( Rect(wx*7/9, wy*23/32, wx*2/9, wy/8), IdontknowButton) ){
-		addChat(user_name + ":\n分からん…");
+		//addChat(user_name + ":\n分からん…");
 		wss.SendMessage(null,"4");
 	}
 	
@@ -55,10 +57,24 @@ function OnGUI(){
 }
 function Update(){
 	//会話ログを受信
-	//var messages:List.< Dictionary.<String, Object> > = wss.messages as List.< Dictionary.<String, Object> >;
-	//var emotion:Dictionary.<String, Object> = messages[0] as Dictionary.<String, Object>;
-	//var emoNum:int = parseInt( emotion["emotion"] );
-	//print(emoNum);
+	var messages:List.< Dictionary.<String, Object> > = wss.messages as List.< Dictionary.<String, Object> >;
+	if(messages.Count > prev_messageCount){
+		var emotion:Dictionary.<String, Object> = messages[messages.Count-1] as Dictionary.<String, Object>;
+		var emoNum:int = parseInt( emotion["emotion"] as String);
+		
+		var user:Dictionary.<String, Object> = emotion["user"] as Dictionary.<String, Object>;
+		
+		if(emoNum==1){
+			addChat(user["_id"] + ":\nありがとう！");			
+		}else if(emoNum==2){
+			addChat(user["_id"] + ":\nおいおい！");					
+		}else if(emoNum==3){
+			addChat(user["_id"] + ":\n自信あり！");			
+		}else if(emoNum==4){
+			addChat(user["_id"] + ":\n分からん…！");	
+		}
+		prev_messageCount++;
+	}
 
 	chatLabel = chats.join("\n");
 }
