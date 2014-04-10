@@ -100,7 +100,7 @@ public class WebSocketScript : MonoBehaviour {
         ws.Send(Json.Serialize(sendData));
     }
 
-    public void moveCharacter(float x, float y, float z){
+    public void MoveCharacter(float x, float y, float z){
         Debug.Log("move Character.");
         Dictionary<string, object> sendData = new Dictionary<string, object>();
         Dictionary<string, string> moveData = new Dictionary<string, string>();
