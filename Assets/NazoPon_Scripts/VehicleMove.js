@@ -34,6 +34,10 @@ var playerBoy:GameObject;
 var players:GameObject[];
 var player_count:int = 0;
 
+//ユーザーリスト
+private var wss:WebSocketScript;
+private var users:List.<System.Object>;
+
 function Start () {
 	//ここで、各問題の正答が左右どちらかを取得？
 	migi_correct = true;
@@ -58,6 +62,7 @@ function Start () {
 
 	players = new Array(7);
 	addPlayer();
+	players[0].tag = "Player";
 	//addPlayer();
 	//addPlayer();
 	//addPlayer();

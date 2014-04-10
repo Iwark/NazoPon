@@ -8,8 +8,9 @@ public class WebSocketScript : MonoBehaviour {
 
     public object trolleys;
     public object trolley;
-    private string user_id;
+    public string user_id;
     public bool is_connected;
+    public List<Dictionary<string, object>> messages = new List<Dictionary<string, object>>();
 
     void Awake () {
     }
@@ -58,6 +59,8 @@ public class WebSocketScript : MonoBehaviour {
                 trolleys = Json.Serialize(dict["trolleys"]);
             }else if(dict.ContainsKey("trolley")){
                 trolley = Json.Serialize(dict["trolley"]);
+            }else if(dict.ContainsKey("message") || dict.ContainsKey("emotion")){
+                messages.Add(dict);
             }
         };
 
