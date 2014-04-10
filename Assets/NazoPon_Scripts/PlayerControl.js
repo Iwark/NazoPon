@@ -1,8 +1,6 @@
 ﻿#pragma strict
 
-var speed : float = 6.0;
-//var jumpSpeed : float = 8.0;
-//var gravity : float = 20.0;
+var speed : float = 9.0;
 
 private var moveDirection : Vector3 = Vector3.zero;
 private var controller:CharacterController;
@@ -46,5 +44,11 @@ function Update()
 
 	controller.Move(moveDirection * Time.deltaTime);
 	
-	//print(transform.localPosition.x);
+	if(transform.localPosition.x > 1.5){
+		//左右を送信(or正誤を送信)
+		print("migi");
+	}else if(transform.localPosition.x < -3.0){
+		//左右を送信(or正誤を送信)
+		print("hidari");
+	}
 }

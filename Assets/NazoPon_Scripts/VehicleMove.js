@@ -7,13 +7,15 @@ private var after_select_time = curve_start_pos/speed;
 private var curve_time = 51.8/speed;
 var loop_time = 18.0;
 private var rail_angle = 70.0;
-	
+
+private var scene_start_time:float;
+
 var loop_count:int=0;
 private var curve_start_time = 0.0;
 private var curve_end_time = 0.0;
 
 private var PLAYER_MAX = 7;
-private var PROBLEM_MAX = 15;
+static var PROBLEM_MAX = 15;
 
 var going_migi:boolean;
 var migi_correct:boolean[];
@@ -35,7 +37,7 @@ function Start () {
 		migi_correct[i] = true;
 	}
 
-	going_migi = false;
+	going_migi = true;
 	selected = false;
 	gameover = false;
 
@@ -61,11 +63,13 @@ function Start () {
 	//addPlayer();
 	//addPlayer();
 	//addPlayer();
+	
+	scene_start_time = Time.time;
 }
 
 function addPlayer(){
 	if(player_count < PLAYER_MAX){
-		players[player_count] = Instantiate(playerBoy, transform.position + Vector3(Random.Range(-2.0f,2.0f), 8, -(6.5+1.5*player_count)), Quaternion.identity);
+		players[player_count] = Instantiate(playerBoy, transform.position + Vector3(Random.Range(-1.5f,1.5f), 8, -(6.5+1.5*player_count)), Quaternion.identity);
 		players[player_count].transform.parent = transform;
 		player_count++;
 	}
@@ -73,13 +77,14 @@ function addPlayer(){
 
 function Update () {
 	if(!gameover){
+		var ctime = getTime();
 
 		//ここで、問題表示の間は多数決の結果を受信？
 
-		if(curve_start_time < Time.time && Time.time < curve_end_time){
+		if(curve_start_time < ctime && ctime < curve_end_time){
 			var direction = going_migi ? 1 : -1;
 			transform.Rotate(0, direction * (rail_angle/curve_time)*Time.deltaTime, 0);
-		}else if(Time.time > curve_end_time && !selected){
+		}else if(ctime > curve_end_time && !selected){
 			var direction2 = going_migi ? 1 : -1;
 			transform.rotation = new Quaternion.Euler(0, direction2*rail_angle,0);
 			selected = true;
@@ -90,7 +95,7 @@ function Update () {
 		
 		//正解時
 		if(migi_correct[loop_count] == going_migi){
-			if(Time.time >= initial_time + loop_time*(loop_count+1)){
+			if(ctime >= initial_time + loop_time*(loop_count+1)){
 				loop_count += 1;
 				
 				if(loop_count < PROBLEM_MAX){
@@ -112,23 +117,23 @@ function Update () {
 		}else{
 			var fall_start_time = initial_time + loop_time*(loop_count+1) - 2.5;
 			var fall_end_time = fall_start_time + 2.0;
-			if(fall_start_time < Time.time && Time.time < fall_end_time){
+			if(fall_start_time < ctime && ctime < fall_end_time){
 				transform.Rotate(45.0*Time.deltaTime, 0, 0);
-				var t = Time.time - fall_start_time;
+				var t = ctime - fall_start_time;
 				var theta = 45.0 * t * Mathf.Deg2Rad;
 				transY = (speed * Mathf.Sin(theta) - 21 * t * Mathf.Cos(theta))*Time.deltaTime;
 				transZ = (speed * Mathf.Cos(theta) + 21 * t * Mathf.Sin(theta))*Time.deltaTime;
 				
-				if(fall_start_time +1.0 < Time.time){
+				if(fall_start_time +1.0 < ctime){
 					if(mainCamera.enabled){
 						if(migi_correct[loop_count]){ subCameraA.enabled = true; }else{ subCameraB.enabled = true; }
 						mainCamera.enabled = false;
 					}
 				}
 				
-			}else if(Time.time > fall_end_time){
+			}else if(ctime > fall_end_time){
 				
-				if(Time.time > fall_end_time+3.0){
+				if(ctime > fall_end_time+2.5){
 					gameover=true;
 				}
 			}
@@ -141,4 +146,8 @@ function Update () {
 	}else{
 		//Debug.Log("game over.");
 	}	
+}
+
+function getTime(){
+	return Time.time - scene_start_time;
 }
