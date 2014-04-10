@@ -65,8 +65,10 @@ function Update () {
 					j++;
 				}
 				text_make_room.SetActive(true);
-				
-				
+				/*while(j<RoomCount){
+					GameObject.Find("room"+j).SetActive(true);
+					j++;
+				}*/
 
 
 				//make_room.SetActive(false);
@@ -163,15 +165,9 @@ function Update () {
 				//make_room.SetActive(false);
 				//rooms.SetActive(true);
 			}
-			if(hit.tag.Equals("rooms")){
-				Application.LoadLevel("Roading");
-
-			}
-			if(hit.tag.Equals("make_room")){
-				Application.LoadLevel("Roading");
-
-			}
 		}
+	
+	
 	/*
 		var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		var hitinfo : RaycastHit;
