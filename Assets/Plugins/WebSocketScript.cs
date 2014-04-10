@@ -116,7 +116,7 @@ public class WebSocketScript : MonoBehaviour {
         ws.Send(Json.Serialize(sendData));
     }
 
-    public void SendMessage(string message, int emotion){
+    public void SendMessage(string message, string emotion){
         Debug.Log("send Message.");
         Dictionary<string, object> sendData = new Dictionary<string, object>();
         Dictionary<string, string> mesData = new Dictionary<string, string>();

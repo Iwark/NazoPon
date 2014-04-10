@@ -37,13 +37,13 @@ var player_count:int = 0;
 
 //ユーザーリスト
 private var wss:WebSocketScript;
-private var users:List.<System.Object>;
+private var users:List.< Dictionary.<String, Object> >;
 var trolley:Dictionary.<String, Object>;
 
 function Awake() {
 	wss = GameObject.Find("WebSocket").GetComponent(WebSocketScript);
 	trolley = Json.Deserialize(wss.trolley) as Dictionary.<String, Object>;
-	// users = 
+	users = trolley["users"];
 }
 
 function Start () {
