@@ -8,7 +8,6 @@ var loop_time = 18.0;
 private var rail_angle = 70.0;
 
 private var scene_start_time:float;
-private var AAAAAAAAAA:int = 0;
 
 var quiz_updated:boolean = false;
 var is_seikai = false;
@@ -117,7 +116,6 @@ function Update () {
 		players = new_players;
 	}
 	Debug.Log("available:" + available_player_count);
-	//if (AAAAAAAAAA < 200)
 	for(var p:int =0; p < available_player_count; p++){
 		var pp:GameObject = players[p] as GameObject;
 		if(pp == null) break;
@@ -125,11 +123,8 @@ function Update () {
 			var u_user:Dictionary.<String, Object> = users[uu] as Dictionary.<String, Object>;
 			if(u_user == null) break;
 			if(u_user["_id"] == pp.name && u_user["_id"] != wss.user_id){
-				Debug.Log(u_user["x"]+","+u_user["y"]+","+u_user["z"]);
 				var vec:Vector3 = new Vector3(u_user["x"],u_user["y"],u_user["z"]);
-				Debug.Log("vec:" + vec);
 				pp.transform.Translate(vec - pp.transform.localPosition);
-				AAAAAAAAAA++;
 			}
 		}
 	}
