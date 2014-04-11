@@ -11,7 +11,7 @@ public class WebSocketScript : MonoBehaviour {
     public string user_id;
     public bool is_connected;
     public List<Dictionary<string, object>> messages = new List<Dictionary<string, object>>();
-    public List<Dictionary<string, object>> users;
+    public List<object> users;
     public string result;
 
     WebSocket ws;
@@ -57,8 +57,7 @@ public class WebSocketScript : MonoBehaviour {
             }else if(dict.ContainsKey("trolley")){
                 trolley = Json.Serialize(dict["trolley"]);
                 if(dict.ContainsKey("users")){
-                    Debug.Log("users");
-                    users = dict["users"] as List<Dictionary<string, object>>;
+                    users = dict["users"] as List<object>;
                 }
             }else if(dict.ContainsKey("message") || dict.ContainsKey("emotion")){
                 messages.Add(dict);
