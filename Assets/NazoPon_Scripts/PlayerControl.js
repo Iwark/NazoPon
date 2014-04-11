@@ -1,7 +1,7 @@
 ﻿#pragma strict
 
 var speed : float = 9.0;
-var MOVE_FRAME:int = 5;
+var MOVE_FRAME:int = 10;
 
 private var moveDirection : Vector3 = Vector3.zero;
 private var controller:CharacterController;
