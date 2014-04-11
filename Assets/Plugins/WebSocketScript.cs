@@ -67,10 +67,7 @@ public class WebSocketScript : MonoBehaviour {
                     user_id = (string)user["_id"];
                 }
 
-                Dictionary<string, string> sendData = new Dictionary<string, string>();
-
-                sendData["get_trolleys"] = null;
-                ws.Send(Json.Serialize(sendData));
+                GetTrolleys();
             }
         };
 
@@ -99,6 +96,11 @@ public class WebSocketScript : MonoBehaviour {
 
     IEnumerator Wait(float waitTime) {
         yield return new WaitForSeconds(waitTime);
+    }
+    public void GetTrolleys(){
+        Dictionary<string, string> sendData = new Dictionary<string, string>();
+        sendData["get_trolleys"] = null;
+        ws.Send(Json.Serialize(sendData));
     }
 
     public void RideTrolley(string category, string trolley_id){

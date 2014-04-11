@@ -35,7 +35,8 @@ function Awake() {
 }
 
 function OnGUI() {
-	if(chosenCategory > 0) RenderTrolleys(chosenCategory);
+	trolleys = Json.Deserialize(wss.trolleys) as List.<System.Object>;
+	if(chosenCategory > 0 && trolleys != null) RenderTrolleys(chosenCategory);
 }
 
 function Start () {
@@ -52,6 +53,9 @@ function Start () {
 		j++;
 	}
 	text_make_room.SetActive(false);
+
+	chosenCategory = 7;
+	GetTrolleys();
 
 }
 
@@ -159,5 +163,5 @@ function RenderTrolleys(category){
 }
 
 function GetTrolleys(){
-	trolleys = Json.Deserialize(wss.trolleys) as List.<System.Object>;
+	wss.getTrolleys();
 }
