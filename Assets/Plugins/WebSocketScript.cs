@@ -12,11 +12,14 @@ public class WebSocketScript : MonoBehaviour {
     public bool is_connected;
     public List<Dictionary<string, object>> messages = new List<Dictionary<string, object>>();
 
+    WebSocket ws;
+
     void Awake () {
     }
 
     void Start () {
         DontDestroyOnLoad(this);
+        is_connected = true;
         Connect();
     }
  
@@ -31,8 +34,6 @@ public class WebSocketScript : MonoBehaviour {
     void OnGUI(){
  
     }
- 
-    WebSocket ws;
  
     void Connect(){
         ws =  new WebSocket("ws://donuts.hacker-meetings.com:8081/");
