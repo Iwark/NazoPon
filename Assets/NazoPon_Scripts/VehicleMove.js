@@ -13,6 +13,7 @@ var quiz_updated:boolean = false;
 var is_seikai = false;
 var is_handan = false;
 var is_cameraA = false;
+var is_start = true;
 
 var loop_count:int=0;
 private var curve_start_time = 0.0;
@@ -58,7 +59,8 @@ function Start () {
 	players[0].tag = "Player";
 	//addPlayer();
 	
-	scene_start_time = Time.time;
+	print("1s after");
+	scene_start_time = Time.time - 1;
 }
 
 function addPlayer(){
@@ -74,8 +76,15 @@ function Update () {
 	if(!gameover){
 		var ctime = getTime();
 
+		if(is_start && ctime >= initial_time){
+			var stage_first_y = migi_correct ? 0 : -1000;
+			transform.position = new Vector3(0, stage_first_y, -speed*problem_time);
+			is_start = false;
+		}
+
 		//ここで、問題表示の間は多数決の結果を受信？
 
+		//曲がる
 		if(curve_start_time < ctime && ctime < curve_end_time){
 			var direction = going_migi ? 1 : -1;
 			transform.Rotate(0, direction * (rail_angle/curve_time)*Time.deltaTime, 0);
@@ -116,7 +125,7 @@ function Update () {
 				
 				if(fall_start_time +1.0 < ctime){
 					if(mainCamera.enabled){
-						print(migi_correct);
+						//print(migi_correct);
 						if(is_cameraA){ subCameraA.enabled = true; }else{ subCameraB.enabled = true; }
 						mainCamera.enabled = false;
 					}
