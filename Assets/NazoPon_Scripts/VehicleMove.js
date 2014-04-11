@@ -89,7 +89,7 @@ function Update () {
 			for(var u:int = 0; u<PLAYER_MAX; u++){
 				var player:GameObject = players[u] as GameObject;
 				if(player != null){
-					if(player.tag == user["_id"]){
+					if(player.name == user["_id"]){
 						new_players[i] = player;
 						available_player_count++;
 					}
@@ -102,11 +102,13 @@ function Update () {
 				if(user["_id"] == wss.user_id){
 					Debug.Log("おえ");
 					new_players[i] = Instantiate(playerBoyControllerbale, transform.position + Vector3(Random.Range(-1.5f,1.5f), 8, -(6.5+1.5*player_count)), Quaternion.identity);
+					new_players[i].name = user["_id"];
 				}
 				//自機でなければ
 				else{
 					Debug.Log("おええ");
 					new_players[i] = Instantiate(playerBoy, transform.position + Vector3(Random.Range(-1.5f,1.5f), 8, -(6.5+1.5*player_count)), Quaternion.identity);
+					new_players[i].name = user["_id"];
 				}
 				available_player_count++;
 				new_players[i].transform.parent = transform;
@@ -114,6 +116,18 @@ function Update () {
 
 		}
 		players = new_players;
+	}
+	for(var p:int =0; p < available_player_count; p++){
+		var pp:GameObject = players[p] as GameObject;
+		if(pp == null) break;
+		for(var uu:int = 0; uu<users.Count; uu++){
+			var u_user:Dictionary.<String, Object> = users[uu] as Dictionary.<String, Object>;
+			if(u_user == null) break;
+			if(u_user["_id"] == pp.name && u_user["_id"] != wss.user_id){
+				Debug.Log(u_user["x"]+","+u_user["y"]+","+u_user["z"]);
+				pp.transform.localPosition = new Vector3(u_user["x"],u_user["y"],u_user["z"]);
+			}
+		}
 	}
 
 	var ctime = getTime();
