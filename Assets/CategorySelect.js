@@ -21,6 +21,7 @@ RoomCount = 2;//部屋の数を表示
 //トロッコ
 private var wss:WebSocketScript;
 private var trolleys:List.<System.Object>;
+private var trolley:Dictionary.<String, Object>;
 
 //カテゴリリスト
 private var categories = ["スポーツ","数学理科","文学歴史","雑学","芸能","アニゲー"];
@@ -55,6 +56,12 @@ function Start () {
 }
 
 function Update () {
+
+	trolley = Json.Deserialize(wss.trolley) as Dictionary.<String, Object>;
+	if(trolley != null && trolley["correct_way"] != null){
+		Debug.Log(trolley["correct_way"]);
+		Application.LoadLevel("MainScene");
+	}
 
 	if(Input.GetMouseButtonDown(0)){
 		var trolley:Dictionary.<String, System.Object>;
@@ -142,7 +149,6 @@ function RenderTrolleys(category){
 
 		if(GUILayout.Button(categories[category_num-1], [GUILayout.MinWidth(Screen.width*3/10),GUILayout.MinHeight(Screen.width/4), GUILayout.ExpandWidth(false)])){
 			wss.RideTrolley(tr["category"].ToString(),tr["_id"]);
-			Application.LoadLevel("MainScene");
 		}
 
 		if(t%3 == 2 || t == category_trolleys.Count-1) GUILayout.EndHorizontal();
