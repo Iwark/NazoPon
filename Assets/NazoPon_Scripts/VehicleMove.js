@@ -122,7 +122,9 @@ function Update () {
 			if(u_user == null) break;
 			if(u_user["_id"] == pp.name && u_user["_id"] != wss.user_id){
 				var vec:Vector3 = new Vector3(u_user["x"],u_user["y"],u_user["z"]);
+				// pp.transform.localRotation = Quaternion.Euler(0,0,0);
 				pp.transform.Translate(vec - pp.transform.localPosition);
+
 			}
 		}
 	}
