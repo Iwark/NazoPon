@@ -75,7 +75,7 @@ function Update () {
 
 	trolley = Json.Deserialize(wss.trolley) as Dictionary.<String, Object>;
 	var users:List.< Object > = wss.users as List.< Object >;
-	if(users.Count != available_player_count){
+	if(users != null && users.Count != available_player_count){
 		available_player_count = 0;
 		var player_count:int =  users.Count;
 		var new_players:GameObject[];
