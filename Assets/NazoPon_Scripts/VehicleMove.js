@@ -114,7 +114,6 @@ function Update () {
 		}
 		players = new_players;
 	}
-	Debug.Log("available:" + available_player_count);
 	for(var p:int =0; p < available_player_count; p++){
 		var pp:GameObject = players[p] as GameObject;
 		if(pp == null) break;

@@ -163,5 +163,5 @@ function RenderTrolleys(category){
 }
 
 function GetTrolleys(){
-	wss.getTrolleys();
+	wss.GetTrolleys();
 }
