@@ -8,7 +8,6 @@ private var quiz_text:String="";
 private var left_text:String="";
 private var right_text:String="";
 
-private var isFirst:boolean;
 
 var problemStyle:GUIStyle;
 var choiceLStyle:GUIStyle;
@@ -39,14 +38,13 @@ function Start(){
 	loop_time = script.loop_time;
 	
 	countdownFontSize = countdownStyle.fontSize;
-	isFirst = true;
 }
 
 function Update (){
 	//問題文と選択肢を受信
 	var trolley:Dictionary.<String, Object> = Json.Deserialize(wss.trolley) as Dictionary.<String, Object>;
 	
-	var quiz_updated = trolley["updated_at"];
+	//var quiz_updated = trolley["updated_at"];
 	
 	if(!script.quiz_updated){
 		var quiz:Dictionary.<String, Object> = trolley["quiz"] as Dictionary.<String, Object>;
@@ -55,12 +53,11 @@ function Update (){
 		var quiz_wrong:String = quiz["wrong_answer"];
 	
 		quiz_text = quiz_contents;
-		var r = Random.Range(-1.0,1.0);
-		if(isFirst || r>0){
+		var r:int = trolley["correct_way"];
+		if(r==1){
 			left_text = quiz_wrong;
 			right_text = quiz_correct;
 			script.migi_correct = true;
-			isFirst = false;
 		}else{
 			left_text = quiz_correct;
 			right_text = quiz_wrong;

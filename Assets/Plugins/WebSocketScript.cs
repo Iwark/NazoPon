@@ -11,12 +11,16 @@ public class WebSocketScript : MonoBehaviour {
     public string user_id;
     public bool is_connected;
     public List<Dictionary<string, object>> messages = new List<Dictionary<string, object>>();
+    public string result;
+
+    WebSocket ws;
 
     void Awake () {
     }
 
     void Start () {
         DontDestroyOnLoad(this);
+        is_connected = true;
         Connect();
     }
  
@@ -32,8 +36,6 @@ public class WebSocketScript : MonoBehaviour {
  
     }
  
-    WebSocket ws;
- 
     void Connect(){
         ws =  new WebSocket("ws://donuts.hacker-meetings.com:8081/");
  
@@ -44,7 +46,11 @@ public class WebSocketScript : MonoBehaviour {
             Debug.Log(string.Format( "Receive {0}",s));
 
             Dictionary<string,object> dict = Json.Deserialize(s) as Dictionary<string,object>;
-            if(dict.ContainsKey("trolleys")){
+            
+            //問題ごとの結果取得
+            if(dict.ContainsKey("result")){
+                result = (string)dict["result"];
+            }else if(dict.ContainsKey("trolleys")){
                 Debug.Log(Json.Serialize(dict["trolleys"]));
                 trolleys = Json.Serialize(dict["trolleys"]);
             }else if(dict.ContainsKey("trolley")){
@@ -104,7 +110,7 @@ public class WebSocketScript : MonoBehaviour {
     }
 
     public void MoveCharacter(float x, float y, float z){
-        Debug.Log("move Character.");
+        //Debug.Log("move Character.");
         Dictionary<string, object> sendData = new Dictionary<string, object>();
         Dictionary<string, string> moveData = new Dictionary<string, string>();
         moveData["x"] = x.ToString();
@@ -112,7 +118,7 @@ public class WebSocketScript : MonoBehaviour {
         moveData["z"] = z.ToString();
         moveData["user_id"] = user_id;
         sendData["move_character"] = moveData;
-        Debug.Log("senddata: "+Json.Serialize(sendData));
+        //Debug.Log("senddata: "+Json.Serialize(sendData));
         ws.Send(Json.Serialize(sendData));
     }
 
