@@ -15,6 +15,9 @@ private var user_name;
 
 private var prev_messageCount:int = 0;
 
+private var wx = Screen.width;
+private var wy = Screen.height;
+
 //Webと通信
 private var wss:WebSocketScript;
 
@@ -23,13 +26,11 @@ function Awake() {
 }
 
 function Start(){
-	user_name = "(ユーザー名)";
+	//user_name = "(ユーザー名)";
+	chatStyle.fontSize = Mathf.Floor(wx/20);
 }
 
 function OnGUI(){
-	var wx = Screen.width;
-	var wy = Screen.height;
-	
 	if( GUI.Button( Rect(wx*5/9, wy*27/32, wx*2/9, wy/8), clapButton) ){
 		//addChat(user_name + ":\nありがとう！");
 		wss.SendMessage(null,"1");

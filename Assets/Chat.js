@@ -1,50 +1,89 @@
 ﻿#pragma strict
-
-var clapButton:Texture2D;
-var angerButton:Texture2D;
-var IknowButton:Texture2D;
-var IdontknowButton:Texture2D;
 var chat = "";
-
+	
+var ChatLine;
+	
 private var style:GUIStyle;
 
 private var chats = new Array("","","","","","","","","","");
 private var chatLabel:String;
+private var ChatShow = new Array("","","","","","","","","","");
+private var b_sum : int[] = [0,0,0,0,0,0,0,0,0,0];
 
-private var user_name;
+var user_name = "ユーザー:";
+var count = 0;
 
 function Start(){
 	style = new GUIStyle();
-	style.fontSize = 11;
+	style.fontSize = 15;
 	style.normal.textColor = Color.black;
 	
-/*	var x = new Texture2D(1, 1);
-	x.SetPixel(0,0,Color.white);
-	
+	var x = new Texture2D(1, 1);
+		x.SetPixel(0,0,Color.white);
 	style.normal.background = x;
-*/
-	user_name = "(ユーザー)";
+	//user_name = "ユーザー:";
 }
 
 function OnGUI(){
 	var wx = Screen.width;
 	var wy = Screen.height;
-	chat = GUI.TextField(Rect(wx*1/9, wy*27/32, wx*7/9, wy*2/32), chat, 16);
 
-	if( GUI.Button( Rect(wx*6/9, wy*29/32, wx*2/9, wy*2/32), "送信") ){
-		addChat(user_name + chat);
+	chat = GUI.TextField(Rect(wx*1/10, wy*17/32, wx*6/10, wy*2/32), chat, 63-user_name.Length);
+
+	if( GUI.Button( Rect(wx*7/10, wy*17/32, wx*2/10, wy*2/32), "送信") ){
+		var ChatText = user_name + chat;
+		var ChatLength : int = ChatText.Length;
+		Debug.Log(ChatLength);
+		if(ChatText.Length>21&& ChatText.Length<42){
+			var chat0 = ChatText.Substring(0, 21);
+			var chat1 = ChatText.Substring(21, ChatText.Length-21);
+			ChatText = chat0 + "\n" + chat1; 
+			ChatLine = 2;
+		}
+		else if(ChatText.Length>42){
+			var chat2 = ChatText.Substring(0, 21);
+			var chat3 = ChatText.Substring(21, 21);
+			var chat4 = ChatText.Substring(42, ChatText.Length-42);
+			ChatText = chat2 + "\n" + chat3 + "\n" + chat4; 
+			ChatLine = 3;
+		}
+		else{
+			ChatLine = 1;
+		}
+		addChat(ChatText, ChatLine);
+  		chat = GUI.TextField(Rect(wx*1/10, wy*17/32, wx*6/10, wy*2/32), "", 54-user_name.Length);
 	}
+
 	GUILayout.BeginVertical(GUILayout.ExpandHeight(true));
-	GUI.Label( Rect(wx*1/9, wy*17/32, wx*5/9, wy/4), chatLabel, style);
-    GUILayout.EndVertical();
+	GUI.Label( Rect(wx*1/9, wy*20/32, wx*7/9, wy*9/32), chatLabel, style);
+	GUILayout.EndVertical();
 }
 function Update(){
-	chatLabel = chats.join("\n");
+	chatLabel = ChatShow.join("\n");
 }
 
-function addChat(a:String){
-	for(var i=1; i<chats.length; i++){
+function addChat(a:String, b:int){
+	/*for(var i=1; i<chats.length; i++){
 		chats[i-1] = chats[i];
 	}
 	chats[chats.length-1] = a;
+	*/	
+	for(var i=chats.length-1; i>0; i--){
+		Debug.Log("chats["+i+"]:="+chats[i]);
+		chats[i] = chats[i-1];
+		b_sum[i] = b_sum[i-1];
+	}
+	chats[0] = a;
+	b_sum[0] = b;
+	count = 0;
+	for(var j = 0; j < 10; j++){
+		count+=b_sum[j];
+		if(count<10){
+			ChatShow[j] = chats[j];
+			Debug.Log("count = "+count);
+		}
+		else{
+			ChatShow[j] = "";
+		}
+	}
 }

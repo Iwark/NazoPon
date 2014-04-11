@@ -8,14 +8,13 @@ private var quiz_text:String="";
 private var left_text:String="";
 private var right_text:String="";
 
-private var isFirst:boolean;
 
 var problemStyle:GUIStyle;
 var choiceLStyle:GUIStyle;
 var choiceRStyle:GUIStyle;
 var countdownStyle:GUIStyle;
 var seikaiStyle:GUIStyle;
-private var countdownFontSize:int;
+private var countdownFirstFontSize:int = 38;
 
 private var vehicle:GameObject;
 private var script:VehicleMove; //VehicleMove.js
@@ -26,11 +25,37 @@ private var wy = Screen.height;
 //Webと通信
 private var wss:WebSocketScript;
 
+//Sound
+var seikai : AudioSource;
+var seikaiBool : boolean  = true;
+//Seikai = this.gameObject.GetComponent("Sound_Seikai");
+seikai = GameObject.Find("Sound_Seikai").GetComponent("AudioSource");
+
+var count : AudioSource;
+count = GameObject.Find("Sound_CountDown").GetComponent("AudioSource");
+
+var countBool1 : boolean = true;
+var countBool2 : boolean = true;
+var countBool3 : boolean = true;
+var countBool4 : boolean = true;
+var countBool5 : boolean = true;
+
+var count0 : AudioSource;
+count0 = GameObject.Find("Sound_0second").GetComponent("AudioSource");
+var countBool0 : boolean = true;
+
+var kansei : AudioSource;
+kansei = GameObject.Find("Sound_Kansei").GetComponent("AudioSource");
+var kanseiBool : boolean = true;
+
+
 function Awake() {
 	wss = GameObject.Find("WebSocket").GetComponent(WebSocketScript);
 }
 
 function Start(){
+	//print("width:"+wx+"  height:"+wy);
+
 	vehicle = GameObject.Find("NazoPon");
 	script = vehicle.GetComponent(VehicleMove);
 	
@@ -38,15 +63,18 @@ function Start(){
 	problem_time = script.problem_time;
 	loop_time = script.loop_time;
 	
-	countdownFontSize = countdownStyle.fontSize;
-	isFirst = true;
+	problemStyle.fontSize = Mathf.Floor(wx/14);
+	choiceLStyle.fontSize = Mathf.Floor(wx/14);
+	choiceRStyle.fontSize = Mathf.Floor(wx/14);
+	countdownStyle.fontSize = Mathf.Floor(wx/6);
+	seikaiStyle.fontSize = Mathf.Floor(wx*4/15);
 }
 
 function Update (){
 	//問題文と選択肢を受信
 	var trolley:Dictionary.<String, Object> = Json.Deserialize(wss.trolley) as Dictionary.<String, Object>;
 	
-	var quiz_updated = trolley["updated_at"];
+	//var quiz_updated = trolley["updated_at"];
 	
 	if(!script.quiz_updated){
 		var quiz:Dictionary.<String, Object> = trolley["quiz"] as Dictionary.<String, Object>;
@@ -55,12 +83,11 @@ function Update (){
 		var quiz_wrong:String = quiz["wrong_answer"];
 	
 		quiz_text = quiz_contents;
-		var r = Random.Range(-1.0,1.0);
-		if(isFirst || r>0){
+		var r:int = trolley["correct_way"];
+		if(r==1){
 			left_text = quiz_wrong;
 			right_text = quiz_correct;
 			script.migi_correct = true;
-			isFirst = false;
 		}else{
 			left_text = quiz_correct;
 			right_text = quiz_wrong;
@@ -85,36 +112,87 @@ function OnGUI () {
 		}
 		
 		if(t-5 < ctime && ctime < t-4){
-			countdownStyle.fontSize = countdownFontSize;
+			countdownStyle.fontSize = countdownFirstFontSize;
 			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*12/32), "5", countdownStyle);
-		}
-		else if(t-4 < ctime && ctime < t-3){
-			countdownStyle.fontSize = countdownFontSize+8;
+				if(countBool1){
+					count.Play();
+					countBool1 = false;
+				}
+		}else if(t-4 < ctime && ctime < t-3){
+			countdownStyle.fontSize = countdownFirstFontSize*1.2;
 			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*12/32), "4", countdownStyle);
+				if(countBool2){
+					count.Play();
+					countBool2 = false;
+				}
 		}
 		else if(t-3 < ctime && ctime < t-2){
-			countdownStyle.fontSize = countdownFontSize+16;
+			countdownStyle.fontSize = countdownFirstFontSize*1.4;
 			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*12/32), "3", countdownStyle);
+				if(countBool3){
+					count.Play();
+					countBool3 = false;
+				}
 		}
 		else if(t-2 < ctime && ctime < t-1){
-			countdownStyle.fontSize  = countdownFontSize+32;
+			countdownStyle.fontSize  = countdownFirstFontSize*1.8;
 			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*12/32), "2", countdownStyle);
+				if(countBool4){
+					count.Play();
+					countBool4 = false;
+				}
 		}
 		else if(t-1 < ctime && ctime < t){
-			countdownStyle.fontSize  = countdownFontSize+48;
+			countdownStyle.fontSize  = countdownFirstFontSize*2.2;
 			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*12/32), "1", countdownStyle);
+				if(countBool5){
+					count.Play();
+					countBool5 = false;
+				}
 		}
+		else if(t < ctime){
+				if(countBool0){
+					count0.Play();
+					countBool0 = false;
+				}
+		}
+		else{
+			countBool0 = true;
+			countBool1 = true;
+			countBool2 = true;
+			countBool3 = true;
+			countBool4 = true;
+			countBool5 = true;
+		}
+		/*if(ctime == t-4 || ctime == t-3 || ctime == t-2 || ctime == t-1 || ctime == t){
+			countBool = true;
+			
+		}*/
 		
 		if(script.is_seikai){
 			if( (t+4.5 < ctime && ctime < t+5.2)
 			 || (t+5.5 < ctime && ctime < t+6.2) ){
 				GUI.Label( Rect(wx*2/18, wy*5/32, wx*14/18, wy*7/32), "正解！", seikaiStyle);
+				if(seikaiBool){
+					seikai.Play();
+					seikaiBool = false;
+				}
+			}
+			if(t+6.3 < ctime && ctime < t+6.5){
+				seikaiBool = true;
+				if(kanseiBool){
+					kansei.Play();
+					kanseiBool = false;
+				}
+			}
+			else{
+					kanseiBool = true;
 			}
 		}
 		
 	//ゲームオーバー時
 	}else{
-		countdownStyle.fontSize = countdownFontSize;
+		countdownStyle.fontSize = countdownFirstFontSize;
 		GUI.Label( Rect(wx*2/18, wy*5/32, wx*14/18, wy*7/32), "GAME OVER", countdownStyle);
 	}
 }
