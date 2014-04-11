@@ -1,7 +1,7 @@
 ﻿#pragma strict
 private var speed = 50.0;
 private var curve_start_pos = 90.0;
-var initial_time = 2.0;
+var initial_time = 5.0;
 var problem_time = 10.0;
 private var curve_time = 51.8/speed;
 var loop_time = 18.0;
@@ -36,6 +36,8 @@ var playerBoyControllerbale:GameObject;
 var players:GameObject[];
 var available_player_count:int = 0;
 
+var time_of_U:float;
+
 //ユーザーリスト
 private var wss:WebSocketScript;
 var trolley:Dictionary.<String, Object>;
@@ -59,7 +61,32 @@ function Start () {
 	// players[0].tag = "Player";
 	//addPlayer();
 	
-	scene_start_time = Time.time;
+	
+	//遅れて入ってきた場合に経過時間を計算する
+	trolley = Json.Deserialize(wss.trolley) as Dictionary.<String, Object>;
+	
+	var epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
+	var timestamp = (System.DateTime.UtcNow - epochStart).TotalSeconds;
+	var u_at:long = trolley["updated_at"];	
+	
+	var cn:int = trolley["current_num"];
+	var time_offset:float;
+	
+	time_of_U = timestamp - u_at/1000;
+
+	if(cn==1){
+		time_offset = time_of_U;
+		loop_count = 0;
+	}else{
+		time_offset = time_of_U + loop_time*(cn-2) + initial_time + problem_time;
+		loop_count = ( time_of_U < loop_time-problem_time ) ? (cn-2) : (cn-1) ;
+	}
+	
+	print(time_offset);
+
+	scene_start_time = Time.time - time_offset;
+	
+	transform.Translate(0, 0, time_offset*speed);
 }
 
 // function addPlayer(){
@@ -130,6 +157,10 @@ function Update () {
 	var ctime = getTime();
 	if(!gameover){
 
+		var cn:int = trolley["current_num"];
+		if(time_of_U > initial_time || cn > 1 ){
+			is_start = false;
+		}
 		if(is_start && ctime >= initial_time){
 			var stage_first_y = migi_correct ? 0 : -1000;
 			transform.position = new Vector3(0, stage_first_y, -speed*problem_time);
