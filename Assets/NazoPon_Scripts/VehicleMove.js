@@ -40,6 +40,8 @@ var available_player_count:int = 0;
 private var wss:WebSocketScript;
 var trolley:Dictionary.<String, Object>;
 
+var Last:boolean;
+
 function Awake() {
 	wss = GameObject.Find("WebSocket").GetComponent(WebSocketScript);
 	//users = trolley["users"];
@@ -84,7 +86,7 @@ function Update () {
 		for(var i:int = 0; i<users.Count; i++){
 
 			var user:Dictionary.<String, Object> = users[i] as Dictionary.<String, Object>;
-			Debug.Log(user["_id"]);
+			//Debug.Log(user["_id"]);
 			//既にいるユーザーはそのまま格納
 			for(var u:int = 0; u<PLAYER_MAX; u++){
 				var player:GameObject = players[u] as GameObject;
@@ -142,6 +144,7 @@ function Update () {
 		//ここで、問題表示の間は多数決の結果を受信？
 		if(wss.result == "correct"){
 			going_migi = migi_correct;
+			
 		}else{
 			going_migi = !migi_correct;
 		}
@@ -207,6 +210,7 @@ function Update () {
 	//ゲームオーバー時
 	}else{
 		if(ctime - gameover_time > 2.0f){
+			Last = going_migi;
 			Application.LoadLevel("Result");
 		}
 	}	
