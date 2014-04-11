@@ -5,7 +5,8 @@ import System.Collections.Generic;
 
 var guiLayer : GUILayer;
 
-
+var MAX_FRAME:int = 10;
+private var frame:int = 0;
 
 public var rooms : GameObject[];
 rooms = GameObject.FindGameObjectsWithTag("rooms");
@@ -35,6 +36,8 @@ function Awake() {
 }
 
 function OnGUI() {
+	if(frame % MAX_FRAME == 0) GetTrolleys();
+	frame++;
 	trolleys = Json.Deserialize(wss.trolleys) as List.<System.Object>;
 	if(chosenCategory > 0 && trolleys != null) RenderTrolleys(chosenCategory);
 }
@@ -55,8 +58,6 @@ function Start () {
 	text_make_room.SetActive(false);
 
 	chosenCategory = 7;
-	GetTrolleys();
-
 }
 
 function Update () {

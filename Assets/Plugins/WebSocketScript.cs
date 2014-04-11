@@ -57,6 +57,7 @@ public class WebSocketScript : MonoBehaviour {
             }else if(dict.ContainsKey("trolley")){
                 trolley = Json.Serialize(dict["trolley"]);
                 if(dict.ContainsKey("users")){
+                    Debug.Log("users");
                     users = dict["users"] as List<Dictionary<string, object>>;
                 }
             }else if(dict.ContainsKey("message") || dict.ContainsKey("emotion")){
@@ -98,9 +99,11 @@ public class WebSocketScript : MonoBehaviour {
         yield return new WaitForSeconds(waitTime);
     }
     public void GetTrolleys(){
-        Dictionary<string, string> sendData = new Dictionary<string, string>();
-        sendData["get_trolleys"] = null;
-        ws.Send(Json.Serialize(sendData));
+        if(ws != null){
+            Dictionary<string, string> sendData = new Dictionary<string, string>();
+            sendData["get_trolleys"] = null;
+            ws.Send(Json.Serialize(sendData));
+        }
     }
 
     public void RideTrolley(string category, string trolley_id){
