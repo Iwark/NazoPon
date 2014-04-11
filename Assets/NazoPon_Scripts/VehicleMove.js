@@ -59,7 +59,7 @@ function Start () {
 	// players[0].tag = "Player";
 	//addPlayer();
 	
-	scene_start_time = Time.time;
+	scene_start_time = Time.time -3 ;
 }
 
 // function addPlayer(){
