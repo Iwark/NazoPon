@@ -13,6 +13,7 @@ public class WebSocketScript : MonoBehaviour {
     public List<Dictionary<string, object>> messages = new List<Dictionary<string, object>>();
     public List<object> users;
     public string result;
+    public bool is_migi;
 
     WebSocket ws;
 

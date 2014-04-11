@@ -1,7 +1,7 @@
 ﻿#pragma strict
 
 var speed : float = 9.0;
-var MOVE_FRAME:int = 10;
+var MOVE_FRAME:int = 5;
 
 private var moveDirection : Vector3 = Vector3.zero;
 private var controller:CharacterController;
@@ -66,9 +66,9 @@ function Update()
 		is_stop = false;
 		//iOS
 		var ax = Input.acceleration.x;
-		if(ax < -1.8){
+		if(ax < -0.5){
 			speedScale = 1;
-		}else if(1.8 < ax){
+		}else if(0.5 < ax){
 			speedScale = -1;
 		}else{
 			speedScale = 0;
