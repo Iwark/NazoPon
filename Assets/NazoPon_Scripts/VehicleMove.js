@@ -42,7 +42,6 @@ var trolley:Dictionary.<String, Object>;
 
 function Awake() {
 	wss = GameObject.Find("WebSocket").GetComponent(WebSocketScript);
-	//users = trolley["users"];
 }
 
 function Start () {
@@ -75,7 +74,7 @@ function Start () {
 function Update () {
 
 	trolley = Json.Deserialize(wss.trolley) as Dictionary.<String, Object>;
-	var users:List.< Object > = trolley["users"] as List.<Object>;
+	var users:List.< Object > = wss.users;
 	if(users.Count != available_player_count){
 		available_player_count = 0;
 		var player_count:int =  users.Count;
