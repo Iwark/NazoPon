@@ -80,6 +80,7 @@ function Update () {
 		var player_count:int =  users.Count;
 		var new_players:GameObject[];
 		new_players = new Array(7);
+		var already = false;
 		for(var i:int = 0; i<users.Count; i++){
 
 			var user:Dictionary.<String, Object> = users[i] as Dictionary.<String, Object>;
@@ -99,8 +100,11 @@ function Update () {
 			if(new_players[i] == null){
 				//自機だったら
 				if(user["_id"] == wss.user_id){
-					new_players[i] = Instantiate(playerBoyControllerbale, transform.position + Vector3(Random.Range(-1.5f,1.5f), 8, -(6.5+1.5*player_count)), Quaternion.identity);
-					new_players[i].name = user["_id"];
+					if(!already){
+						new_players[i] = Instantiate(playerBoyControllerbale, transform.position + Vector3(Random.Range(-1.5f,1.5f), 8, -(6.5+1.5*player_count)), Quaternion.identity);
+						new_players[i].name = user["_id"];
+						already = true;
+					}
 				}
 				//自機でなければ
 				else{
