@@ -5,19 +5,28 @@ right = GameObject.Find("GameoverRight");
 public var left : GameObject;
 left = GameObject.Find("GameoverLeft");
 
-var obj : VehicleMove;
+private var vehicle:GameObject;
+private var script:VehicleMove; //VehicleMove.js
+
+private var wss:WebSocketScript;
 
 function Start () {
+
+	wss = GameObject.Find("WebSocket").GetComponent(WebSocketScript);
+
+	//vehicle = GameObject.Find("NazoPon");
+	//script = vehicle.GetComponent(VehicleMove);
+
 	style = new GUIStyle();
 	style.fontSize = 27;
 	style.normal.textColor = Color.white;
 	
-	//if(obj.Last==false){//最後にまがったのが左の時
+	if(wss.is_migi==false){//最後にまがったのが左の時
 		right.SetActive(false);
-	//}
-	//else{//最後にまがったのが右の時
+	}
+	else{//最後にまがったのが右の時
 		left.SetActive(false);
-	//}
+	}
 }
 
 function OnGUI(){

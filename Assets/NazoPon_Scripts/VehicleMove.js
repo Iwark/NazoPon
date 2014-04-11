@@ -44,7 +44,6 @@ var Last:boolean;
 
 function Awake() {
 	wss = GameObject.Find("WebSocket").GetComponent(WebSocketScript);
-	//users = trolley["users"];
 }
 
 function Start () {
@@ -77,8 +76,8 @@ function Start () {
 function Update () {
 
 	trolley = Json.Deserialize(wss.trolley) as Dictionary.<String, Object>;
-	var users:List.< Object > = trolley["users"] as List.<Object>;
-	if(users.Count != available_player_count){
+	var users:List.< Object > = wss.users as List.< Object >;
+	if(users != null && users.Count != available_player_count){
 		available_player_count = 0;
 		var player_count:int =  users.Count;
 		var new_players:GameObject[];
@@ -86,7 +85,7 @@ function Update () {
 		for(var i:int = 0; i<users.Count; i++){
 
 			var user:Dictionary.<String, Object> = users[i] as Dictionary.<String, Object>;
-			//Debug.Log(user["_id"]);
+
 			//既にいるユーザーはそのまま格納
 			for(var u:int = 0; u<PLAYER_MAX; u++){
 				var player:GameObject = players[u] as GameObject;
@@ -102,13 +101,11 @@ function Update () {
 			if(new_players[i] == null){
 				//自機だったら
 				if(user["_id"] == wss.user_id){
-					Debug.Log("おえ");
 					new_players[i] = Instantiate(playerBoyControllerbale, transform.position + Vector3(Random.Range(-1.5f,1.5f), 8, -(6.5+1.5*player_count)), Quaternion.identity);
 					new_players[i].name = user["_id"];
 				}
 				//自機でなければ
 				else{
-					Debug.Log("おええ");
 					new_players[i] = Instantiate(playerBoy, transform.position + Vector3(Random.Range(-1.5f,1.5f), 8, -(6.5+1.5*player_count)), Quaternion.identity);
 					new_players[i].name = user["_id"];
 				}
@@ -126,8 +123,8 @@ function Update () {
 			var u_user:Dictionary.<String, Object> = users[uu] as Dictionary.<String, Object>;
 			if(u_user == null) break;
 			if(u_user["_id"] == pp.name && u_user["_id"] != wss.user_id){
-				Debug.Log(u_user["x"]+","+u_user["y"]+","+u_user["z"]);
-				pp.transform.localPosition = new Vector3(u_user["x"],u_user["y"],u_user["z"]);
+				var vec:Vector3 = new Vector3(u_user["x"],u_user["y"],u_user["z"]);
+				pp.transform.Translate(vec - pp.transform.localPosition);
 			}
 		}
 	}
@@ -144,11 +141,10 @@ function Update () {
 		//ここで、問題表示の間は多数決の結果を受信？
 		if(wss.result == "correct"){
 			going_migi = migi_correct;
-			
 		}else{
 			going_migi = !migi_correct;
 		}
-
+		wss.is_migi = going_migi;
 		//曲がる
 		if(curve_start_time < ctime && ctime < curve_end_time){
 			var direction = going_migi ? 1 : -1;

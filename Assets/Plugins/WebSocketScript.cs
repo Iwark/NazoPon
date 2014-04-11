@@ -11,7 +11,9 @@ public class WebSocketScript : MonoBehaviour {
     public string user_id;
     public bool is_connected;
     public List<Dictionary<string, object>> messages = new List<Dictionary<string, object>>();
+    public List<object> users;
     public string result;
+    public bool is_migi;
 
     WebSocket ws;
 
@@ -55,6 +57,9 @@ public class WebSocketScript : MonoBehaviour {
                 trolleys = Json.Serialize(dict["trolleys"]);
             }else if(dict.ContainsKey("trolley")){
                 trolley = Json.Serialize(dict["trolley"]);
+                if(dict.ContainsKey("users")){
+                    users = dict["users"] as List<object>;
+                }
             }else if(dict.ContainsKey("message") || dict.ContainsKey("emotion")){
                 messages.Add(dict);
             }else if(dict.ContainsKey("user")){
@@ -63,10 +68,7 @@ public class WebSocketScript : MonoBehaviour {
                     user_id = (string)user["_id"];
                 }
 
-                Dictionary<string, string> sendData = new Dictionary<string, string>();
-
-                sendData["get_trolleys"] = null;
-                ws.Send(Json.Serialize(sendData));
+                GetTrolleys();
             }
         };
 
@@ -95,6 +97,13 @@ public class WebSocketScript : MonoBehaviour {
 
     IEnumerator Wait(float waitTime) {
         yield return new WaitForSeconds(waitTime);
+    }
+    public void GetTrolleys(){
+        if(ws != null){
+            Dictionary<string, string> sendData = new Dictionary<string, string>();
+            sendData["get_trolleys"] = null;
+            ws.Send(Json.Serialize(sendData));
+        }
     }
 
     public void RideTrolley(string category, string trolley_id){

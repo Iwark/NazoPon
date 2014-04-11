@@ -1,6 +1,7 @@
 ﻿#pragma strict
 
 var speed : float = 9.0;
+var MOVE_FRAME:int = 10;
 
 private var moveDirection : Vector3 = Vector3.zero;
 private var controller:CharacterController;
@@ -23,6 +24,8 @@ private var prev_loop_count:int;
 
 //Webと通信
 private var wss:WebSocketScript;
+
+private var frame:int = 0;
 
 function Awake() {
 	wss = GameObject.Find("WebSocket").GetComponent(WebSocketScript);
@@ -90,10 +93,10 @@ function Update()
 	moveDirection *= speed;
 
 	last_pos_x = transform.localPosition.x;
-
+	if(frame % MOVE_FRAME == 0)
+		wss.MoveCharacter(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z );
+	frame++;
 	controller.Move(moveDirection * Time.deltaTime);
-
-	wss.MoveCharacter(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z );
 
 	//問題表示終了時、自分が正解か間違いか送信
 	if(!reply_sent && ctime >= initial_time + script.loop_count*loop_time + problem_time){

@@ -14,7 +14,7 @@ var choiceLStyle:GUIStyle;
 var choiceRStyle:GUIStyle;
 var countdownStyle:GUIStyle;
 var seikaiStyle:GUIStyle;
-private var countdownFontSize:int;
+private var countdownFirstFontSize:int = 38;
 
 private var vehicle:GameObject;
 private var script:VehicleMove; //VehicleMove.js
@@ -36,8 +36,6 @@ function Start(){
 	initial_time = script.initial_time;
 	problem_time = script.problem_time;
 	loop_time = script.loop_time;
-	
-	countdownFontSize = countdownStyle.fontSize;
 }
 
 function Update (){
@@ -82,23 +80,23 @@ function OnGUI () {
 		}
 		
 		if(t-5 < ctime && ctime < t-4){
-			countdownStyle.fontSize = countdownFontSize;
+			countdownStyle.fontSize = countdownFirstFontSize;
 			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*12/32), "5", countdownStyle);
 		}
 		else if(t-4 < ctime && ctime < t-3){
-			countdownStyle.fontSize = countdownFontSize+8;
+			countdownStyle.fontSize = countdownFirstFontSize+8;
 			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*12/32), "4", countdownStyle);
 		}
 		else if(t-3 < ctime && ctime < t-2){
-			countdownStyle.fontSize = countdownFontSize+16;
+			countdownStyle.fontSize = countdownFirstFontSize+16;
 			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*12/32), "3", countdownStyle);
 		}
 		else if(t-2 < ctime && ctime < t-1){
-			countdownStyle.fontSize  = countdownFontSize+32;
+			countdownStyle.fontSize  = countdownFirstFontSize+32;
 			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*12/32), "2", countdownStyle);
 		}
 		else if(t-1 < ctime && ctime < t){
-			countdownStyle.fontSize  = countdownFontSize+48;
+			countdownStyle.fontSize  = countdownFirstFontSize+48;
 			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*12/32), "1", countdownStyle);
 		}
 		
@@ -111,7 +109,7 @@ function OnGUI () {
 		
 	//ゲームオーバー時
 	}else{
-		countdownStyle.fontSize = countdownFontSize;
+		countdownStyle.fontSize = countdownFirstFontSize;
 		GUI.Label( Rect(wx*2/18, wy*5/32, wx*14/18, wy*7/32), "GAME OVER", countdownStyle);
 	}
 }
