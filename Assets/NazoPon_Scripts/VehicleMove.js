@@ -32,12 +32,12 @@ private var subCameraA:Camera;
 private var subCameraB:Camera;
 
 var playerBoy:GameObject;
-var players:GameObject[];
-var player_count:int = 0;
+var playerBoyControllerbale:GameObject;
+var players:GameObject[] = new Array(7);
 
 //ユーザーリスト
 private var wss:WebSocketScript;
-private var users:List.< Dictionary.<String, Object> >;
+private var users:List.< Dictionary.<String, Object> > = new List.< Dictionary.<String, Object> >();
 var trolley:Dictionary.<String, Object>;
 
 function Awake() {
@@ -54,26 +54,56 @@ function Start () {
 	gameover = false;
 
 	loop_count=0;
-
-	players = new Array(7);
-	addPlayer();
-	players[0].tag = "Player";
+	// addPlayer();
+	// players[0].tag = "Player";
 	//addPlayer();
 	
-	print("1s after");
-	scene_start_time = Time.time - 1;
+	scene_start_time = Time.time;
 }
 
-function addPlayer(){
+// function addPlayer(){
 	
-	if(player_count < PLAYER_MAX){
-		players[player_count] = Instantiate(playerBoy, transform.position + Vector3(Random.Range(-1.5f,1.5f), 8, -(6.5+1.5*player_count)), Quaternion.identity);
-		players[player_count].transform.parent = transform;
-		player_count++;
-	}
-}
+// 	if(player_count < PLAYER_MAX){
+// 		players[player_count] = Instantiate(playerBoy, transform.position + Vector3(Random.Range(-1.5f,1.5f), 8, -(6.5+1.5*player_count)), Quaternion.identity);
+// 		players[player_count].transform.parent = transform;
+// 		player_count++;
+// 	}
+// }
 
 function Update () {
+
+	trolley = Json.Deserialize(wss.trolley) as Dictionary.<String, Object>;
+	users = trolley["users"] as List.< Dictionary.<String, Object> >;
+
+	if(users.Count != players.length){
+		var player_count:int =  users.Count;
+		var new_players:GameObject[] = new Array(7);
+		for(var i:int = 0; i<users.Count; i++){
+
+			var user:< Dictionary.<String, Object> = users[i];
+
+			//既にいるユーザーはそのまま格納
+			for(var t:int = 0; t<players.length; t++){
+				if(players[t].tag == user["_id"]) new_players[i] = players[t];
+			}
+
+			//新しく入ったユーザーである場合
+			if(new_players[i] == null){
+				//自機だったら
+				if(user["_id"] == wss.user_id){
+					new_players[i] = Instantiate(playerBoyControllerbale, transform.position + Vector3(Random.Range(-1.5f,1.5f), 8, -(6.5+1.5*player_count)), Quaternion.identity);
+				}
+				//自機でなければ
+				else{
+					new_players[i] = Instantiate(playerBoy, transform.position + Vector3(Random.Range(-1.5f,1.5f), 8, -(6.5+1.5*player_count)), Quaternion.identity);
+				}
+				new_players[i].transform.parent = transform;
+			}
+
+		}
+		players = new_players;
+	}
+
 	var ctime = getTime();
 	if(!gameover){
 
