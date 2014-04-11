@@ -30,12 +30,20 @@ function Awake() {
 }
 
 function Start(){
+	//print("width:"+wx+"  height:"+wy);
+
 	vehicle = GameObject.Find("NazoPon");
 	script = vehicle.GetComponent(VehicleMove);
 	
 	initial_time = script.initial_time;
 	problem_time = script.problem_time;
 	loop_time = script.loop_time;
+	
+	problemStyle.fontSize = Mathf.Floor(wx/14);
+	choiceLStyle.fontSize = Mathf.Floor(wx/14);
+	choiceRStyle.fontSize = Mathf.Floor(wx/14);
+	countdownStyle.fontSize = Mathf.Floor(wx/6);
+	seikaiStyle.fontSize = Mathf.Floor(wx*4/15);
 }
 
 function Update (){
@@ -84,19 +92,19 @@ function OnGUI () {
 			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*12/32), "5", countdownStyle);
 		}
 		else if(t-4 < ctime && ctime < t-3){
-			countdownStyle.fontSize = countdownFirstFontSize+8;
+			countdownStyle.fontSize = countdownFirstFontSize*1.2;
 			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*12/32), "4", countdownStyle);
 		}
 		else if(t-3 < ctime && ctime < t-2){
-			countdownStyle.fontSize = countdownFirstFontSize+16;
+			countdownStyle.fontSize = countdownFirstFontSize*1.4;
 			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*12/32), "3", countdownStyle);
 		}
 		else if(t-2 < ctime && ctime < t-1){
-			countdownStyle.fontSize  = countdownFirstFontSize+32;
+			countdownStyle.fontSize  = countdownFirstFontSize*1.8;
 			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*12/32), "2", countdownStyle);
 		}
 		else if(t-1 < ctime && ctime < t){
-			countdownStyle.fontSize  = countdownFirstFontSize+48;
+			countdownStyle.fontSize  = countdownFirstFontSize*2.2;
 			GUI.Label( Rect(wx*2/18, wy*1/32, wx*14/18, wy*12/32), "1", countdownStyle);
 		}
 		

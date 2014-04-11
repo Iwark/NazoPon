@@ -105,6 +105,7 @@ function Update()
 		}else{
 			migi=false;
 		}
+		Debug.Log("okuru!!!!!!!!!!!");
 		if(migi == script.migi_correct){
 			wss.ReplyAnswer("correct");
 		}else{
