@@ -83,6 +83,11 @@ function Update () {
 		}
 
 		//ここで、問題表示の間は多数決の結果を受信？
+		if(wss.result == "correct"){
+			going_migi = migi_correct;
+		}else{
+			going_migi = !migi_correct;
+		}
 
 		//曲がる
 		if(curve_start_time < ctime && ctime < curve_end_time){
