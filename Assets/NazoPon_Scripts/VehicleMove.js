@@ -66,15 +66,19 @@ function Start () {
 	
 	//遅れて入ってきた場合に経過時間を計算する
 	trolley = Json.Deserialize(wss.trolley) as Dictionary.<String, Object>;
-	
+
+	/* 旧	
 	var epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
 	var timestamp = (System.DateTime.UtcNow - epochStart).TotalSeconds;
+	*/
+	var timestamp:long = trolley["current_time"];
+	
 	var u_at:long = trolley["updated_at"];	
 	
 	var cn:int = trolley["current_num"];
 	var time_offset:float;
 	
-	time_of_U = timestamp - u_at/1000;
+	time_of_U = (timestamp - u_at)/1000;
 
 	if(cn==1){
 		time_offset = time_of_U;
@@ -86,7 +90,10 @@ function Start () {
 	
 	print(time_offset);
 
+	/*旧
 	scene_start_time = Time.time - time_offset;
+	*/
+	scene_start_time = timestamp/1000 - time_offset;	
 	
 	transform.Translate(0, 0, time_offset*speed);
 }
@@ -277,7 +284,13 @@ function CreateMap(){
 }
 
 function getTime(){
+	/*旧
 	return Time.time - scene_start_time;
+	*/
+
+	trolley = Json.Deserialize(wss.trolley) as Dictionary.<String, Object>;
+	var timestamp:long = trolley["current_time"];
+	return timestamp/1000 - scene_start_time;
 }
 
 
