@@ -53,8 +53,8 @@ function Update (){
 		var quiz_wrong:String = quiz["wrong_answer"];
 	
 		quiz_text = quiz_contents;
-		var r = Random.Range(-1.0,1.0); //TODO ここもサーバから受信
-		if(r>0){
+		var r:int = trolley["correct_way"];
+		if(r==1){
 			left_text = quiz_wrong;
 			right_text = quiz_correct;
 			script.migi_correct = true;

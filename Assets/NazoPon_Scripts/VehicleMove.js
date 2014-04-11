@@ -25,6 +25,7 @@ var going_migi:boolean;
 var migi_correct:boolean;
 private var selected:boolean;
 var gameover:boolean;
+var gameover_time:float = 0.0f;
 
 private var mainCamera:Camera;
 private var subCameraA:Camera;
@@ -73,8 +74,8 @@ function addPlayer(){
 }
 
 function Update () {
+	var ctime = getTime();
 	if(!gameover){
-		var ctime = getTime();
 
 		if(is_start && ctime >= initial_time){
 			var stage_first_y = migi_correct ? 0 : -1000;
@@ -139,6 +140,7 @@ function Update () {
 			}else if(ctime > fall_end_time){
 				
 				if(ctime > fall_end_time+2.5){
+					gameover_time = ctime;
 					gameover=true;
 				}
 			}
@@ -148,7 +150,9 @@ function Update () {
 
 	//ゲームオーバー時
 	}else{
-		Application.LoadLevel("Result");
+		if(ctime - gameover_time > 2.0f){
+			Application.LoadLevel("Result");
+		}
 	}	
 }
 
