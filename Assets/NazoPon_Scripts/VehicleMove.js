@@ -33,7 +33,7 @@ private var subCameraB:Camera;
 
 var playerBoy:GameObject;
 var playerBoyControllerbale:GameObject;
-var players:GameObject[] = new Array(7);
+var players:GameObject[];
 
 //ユーザーリスト
 private var wss:WebSocketScript;
@@ -48,6 +48,8 @@ function Awake() {
 function Start () {
 	
 	CreateMap();
+
+	players = new Array(7);
 
 	going_migi = true;
 	selected = false;
@@ -77,14 +79,15 @@ function Update () {
 
 	if(users.Count != players.length){
 		var player_count:int =  users.Count;
-		var new_players:GameObject[] = new Array(7);
+		var new_players:GameObject[];
+		new_players = new Array(7);
 		for(var i:int = 0; i<users.Count; i++){
 
 			var user:Dictionary.<String, Object> = users[i];
 
 			//既にいるユーザーはそのまま格納
-			for(var t:int = 0; t<players.length; t++){
-				if(players[t].tag == user["_id"]) new_players[i] = players[t];
+			for(var u:int = 0; u<players.length; u++){
+				if(players[u].tag == user["_id"]) new_players[i] = players[u];
 			}
 
 			//新しく入ったユーザーである場合
