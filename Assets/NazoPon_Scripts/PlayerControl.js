@@ -89,11 +89,12 @@ function Update()
 	moveDirection = transform.TransformDirection( Vector3(0,0,Mathf.Abs(speedScale) ) );
 	moveDirection *= speed;
 
+	if(Mathf.Floor(last_pos_x*10) != Mathf.Floor(transform.localPosition.x*10)){
+		wss.MoveCharacter(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z );
+	}
 	last_pos_x = transform.localPosition.x;
 
 	controller.Move(moveDirection * Time.deltaTime);
-
-	wss.MoveCharacter(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z );
 
 	//問題表示終了時、自分が正解か間違いか送信
 	if(!reply_sent && ctime >= initial_time + script.loop_count*loop_time + problem_time){

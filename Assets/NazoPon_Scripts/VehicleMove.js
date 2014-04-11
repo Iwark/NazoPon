@@ -8,6 +8,7 @@ var loop_time = 18.0;
 private var rail_angle = 70.0;
 
 private var scene_start_time:float;
+private var AAAAAAAAAA:int = 0;
 
 var quiz_updated:boolean = false;
 var is_seikai = false;
@@ -84,7 +85,7 @@ function Update () {
 		for(var i:int = 0; i<users.Count; i++){
 
 			var user:Dictionary.<String, Object> = users[i] as Dictionary.<String, Object>;
-			Debug.Log(user["_id"]);
+			Debug.Log('user_id:::::::::' + user["_id"]);
 			//既にいるユーザーはそのまま格納
 			for(var u:int = 0; u<PLAYER_MAX; u++){
 				var player:GameObject = players[u] as GameObject;
@@ -100,13 +101,11 @@ function Update () {
 			if(new_players[i] == null){
 				//自機だったら
 				if(user["_id"] == wss.user_id){
-					Debug.Log("おえ");
 					new_players[i] = Instantiate(playerBoyControllerbale, transform.position + Vector3(Random.Range(-1.5f,1.5f), 8, -(6.5+1.5*player_count)), Quaternion.identity);
 					new_players[i].name = user["_id"];
 				}
 				//自機でなければ
 				else{
-					Debug.Log("おええ");
 					new_players[i] = Instantiate(playerBoy, transform.position + Vector3(Random.Range(-1.5f,1.5f), 8, -(6.5+1.5*player_count)), Quaternion.identity);
 					new_players[i].name = user["_id"];
 				}
@@ -117,6 +116,8 @@ function Update () {
 		}
 		players = new_players;
 	}
+	Debug.Log("available:" + available_player_count);
+	//if (AAAAAAAAAA < 200)
 	for(var p:int =0; p < available_player_count; p++){
 		var pp:GameObject = players[p] as GameObject;
 		if(pp == null) break;
@@ -125,7 +126,10 @@ function Update () {
 			if(u_user == null) break;
 			if(u_user["_id"] == pp.name && u_user["_id"] != wss.user_id){
 				Debug.Log(u_user["x"]+","+u_user["y"]+","+u_user["z"]);
-				pp.transform.localPosition = new Vector3(u_user["x"],u_user["y"],u_user["z"]);
+				var vec:Vector3 = new Vector3(u_user["x"],u_user["y"],u_user["z"]);
+				Debug.Log("vec:" + vec);
+				pp.transform.Translate(vec - pp.transform.localPosition);
+				AAAAAAAAAA++;
 			}
 		}
 	}
