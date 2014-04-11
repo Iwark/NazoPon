@@ -23,7 +23,7 @@ function Awake() {
 }
 
 function Start(){
-	user_name = "(ユーザー名)";
+	//user_name = "(ユーザー名)";
 }
 
 function OnGUI(){
