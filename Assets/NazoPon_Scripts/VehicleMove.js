@@ -80,7 +80,7 @@ function Update () {
 		var new_players:GameObject[] = new Array(7);
 		for(var i:int = 0; i<users.Count; i++){
 
-			var user:< Dictionary.<String, Object> = users[i];
+			var user:Dictionary.<String, Object> = users[i];
 
 			//既にいるユーザーはそのまま格納
 			for(var t:int = 0; t<players.length; t++){
