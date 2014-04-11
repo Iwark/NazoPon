@@ -110,7 +110,7 @@ public class WebSocketScript : MonoBehaviour {
     }
 
     public void MoveCharacter(float x, float y, float z){
-        Debug.Log("move Character.");
+        //Debug.Log("move Character.");
         Dictionary<string, object> sendData = new Dictionary<string, object>();
         Dictionary<string, string> moveData = new Dictionary<string, string>();
         moveData["x"] = x.ToString();

@@ -34,10 +34,10 @@ private var subCameraB:Camera;
 var playerBoy:GameObject;
 var playerBoyControllerbale:GameObject;
 var players:GameObject[];
+var available_player_count:int = 0;
 
 //ユーザーリスト
 private var wss:WebSocketScript;
-private var users:List.< Dictionary.<String, Object> > = new List.< Dictionary.<String, Object> >();
 var trolley:Dictionary.<String, Object>;
 
 function Awake() {
@@ -75,31 +75,40 @@ function Start () {
 function Update () {
 
 	trolley = Json.Deserialize(wss.trolley) as Dictionary.<String, Object>;
-	users = trolley["users"] as List.< Dictionary.<String, Object> >;
-
-	if(users.Count != players.length){
+	var users:List.< Object > = trolley["users"] as List.<Object>;
+	if(users.Count != available_player_count){
+		available_player_count = 0;
 		var player_count:int =  users.Count;
 		var new_players:GameObject[];
 		new_players = new Array(7);
 		for(var i:int = 0; i<users.Count; i++){
 
-			var user:Dictionary.<String, Object> = users[i];
-
+			var user:Dictionary.<String, Object> = users[i] as Dictionary.<String, Object>;
+			Debug.Log(user["_id"]);
 			//既にいるユーザーはそのまま格納
-			for(var u:int = 0; u<players.length; u++){
-				if(players[u].tag == user["_id"]) new_players[i] = players[u];
+			for(var u:int = 0; u<PLAYER_MAX; u++){
+				var player:GameObject = players[u] as GameObject;
+				if(player != null){
+					if(player.tag == user["_id"]){
+						new_players[i] = player;
+						available_player_count++;
+					}
+				}
 			}
 
 			//新しく入ったユーザーである場合
 			if(new_players[i] == null){
 				//自機だったら
 				if(user["_id"] == wss.user_id){
+					Debug.Log("おえ");
 					new_players[i] = Instantiate(playerBoyControllerbale, transform.position + Vector3(Random.Range(-1.5f,1.5f), 8, -(6.5+1.5*player_count)), Quaternion.identity);
 				}
 				//自機でなければ
 				else{
+					Debug.Log("おええ");
 					new_players[i] = Instantiate(playerBoy, transform.position + Vector3(Random.Range(-1.5f,1.5f), 8, -(6.5+1.5*player_count)), Quaternion.identity);
 				}
+				available_player_count++;
 				new_players[i].transform.parent = transform;
 			}
 
