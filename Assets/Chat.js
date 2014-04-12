@@ -28,9 +28,15 @@ function OnGUI(){
 	var wx = Screen.width;
 	var wy = Screen.height;
 
-	chat = GUI.TextField(Rect(wx*1/10, wy*17/32, wx*6/10, wy*2/32), chat, 48-user_name.Length);
+	var tfStyle:GUIStyle = new GUIStyle(GUI.skin.textField);
+	tfStyle.fontSize = Screen.width/20;
 
-	if( GUI.Button( Rect(wx*7/10, wy*17/32, wx*2/10, wy*2/32), "送信") ){
+	var buttonStyle:GUIStyle = new GUIStyle(GUI.skin.button);
+	buttonStyle.fontSize = Screen.width/20;
+
+	chat = GUI.TextField(Rect(wx*1/10, wy*17/32, wx*6/10, wy*2/32), chat, 48-user_name.Length, tfStyle);
+
+	if( GUI.Button( Rect(wx*7/10, wy*17/32, wx*2/10, wy*2/32), "送信", buttonStyle) ){
 		var ChatText = user_name + chat;
 		var ChatLength : int = ChatText.Length;
 		Debug.Log(ChatLength);

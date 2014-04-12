@@ -30,10 +30,14 @@ function Start () {
 }
 
 function OnGUI(){
-	if ( GUI.Button( Rect(Screen.width/2-(Screen.width/3)-50, Screen.height/3, Screen.width/3, Screen.height/7), "Yes" )){
+
+	var buttonStyle:GUIStyle = new GUIStyle(GUI.skin.button);
+	buttonStyle.fontSize = Screen.width/12;
+
+	if ( GUI.Button( Rect(Screen.width/2-(Screen.width/3)-50, Screen.height/3, Screen.width/3, Screen.height/7), "Yes", buttonStyle )){
 		Application.LoadLevel("MainScene");
 	}
-	if ( GUI.Button( Rect(Screen.width/2+50, Screen.height/3, Screen.width/3, Screen.height/7), "No" )){
+	if ( GUI.Button( Rect(Screen.width/2+50, Screen.height/3, Screen.width/3, Screen.height/7), "No", buttonStyle  )){
 		Debug.Log("Select_Category");
 	}
 	GUI.Label( Rect(Screen.width*1/10, Screen.height*2/10, Screen.width*5/9, Screen.height/4), "コンティニューしますか？", style);
