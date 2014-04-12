@@ -18,7 +18,7 @@ function Start () {
 	//script = vehicle.GetComponent(VehicleMove);
 
 	style = new GUIStyle();
-	style.fontSize = 27;
+	style.fontSize = Screen.width/20;
 	style.normal.textColor = Color.white;
 	
 	if(wss.is_migi==false){//最後にまがったのが左の時
@@ -30,25 +30,15 @@ function Start () {
 }
 
 function OnGUI(){
-	if ( GUI.Button( Rect(Screen.width/2-100, Screen.height/3, 80, 50), "Yes" )){
+	if ( GUI.Button( Rect(Screen.width/2-(Screen.width/3)-50, Screen.height/3, Screen.width/3, Screen.height/7), "Yes" )){
 		Application.LoadLevel("MainScene");
 	}
-	if ( GUI.Button( Rect(Screen.width/2+20, Screen.height/3, 80, 50), "No" )){
+	if ( GUI.Button( Rect(Screen.width/2+50, Screen.height/3, Screen.width/3, Screen.height/7), "No" )){
 		Debug.Log("Select_Category");
 	}
 	GUI.Label( Rect(Screen.width*1/10, Screen.height*2/10, Screen.width*5/9, Screen.height/4), "コンティニューしますか？", style);
 	
 	
-/*	var wx = Screen.width;
-	var wy = Screen.height;
-	//var text : string;
-	GUI.Label( Rect(0, wy*23/32, wx*5/9, wy/4), chatLabel, style);
-	//text = GUI.TextField(rect1, text, 16);
-
-	if( GUI.Button( Rect(wx*5/9, wy*27/32, wx*2/9, wy/8), clapButton) ){
-		addChat(user_name + ":\nありがとう！");
-	}
-*/
 }
 
 
