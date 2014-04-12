@@ -52,16 +52,27 @@ function Update()
 {
 	var ctime = script.getTime();
 	
-	
+	var tilted:boolean = script.is_tilted;
 	
 	if(reply_sent == true){
 		if( is_stop == true){
-			speedScale = 0;
+			if(tilted && migi != script.going_migi){
+				migi = script.going_migi;
+				is_stop = false;
+			}else{
+				speedScale = 0;
+			}
 		}else if( speedScale != 0 && Mathf.Floor(last_pos_x*10) == Mathf.Floor(transform.localPosition.x*10) ){
 			speedScale = 0;
 			is_stop = true;
-		}else if(migi == true) speedScale = 1;
-		else speedScale = -1;
+		}else{
+			if(tilted && migi != script.going_migi){
+				migi = script.going_migi;
+			}else{ 
+				if(migi == true){ speedScale = 1;} 
+				else{ speedScale = -1;}
+			}
+		}
 	}else{
 		is_stop = false;
 		//iOS

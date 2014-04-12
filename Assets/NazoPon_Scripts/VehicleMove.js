@@ -14,6 +14,7 @@ var is_seikai = false;
 var is_handan = false;
 var is_cameraA = false;
 var is_start = true;
+var is_tilted = false; //CartTilt.jsから変更される
 
 var loop_count:int=0;
 var curve_start_time = 0.0;
