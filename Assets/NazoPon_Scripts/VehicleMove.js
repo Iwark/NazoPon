@@ -7,7 +7,7 @@ private var curve_time = 51.8/speed;
 var loop_time = 18.0;
 private var rail_angle = 70.0;
 
-private var scene_start_time:float;
+private var scene_start_time:long;
 
 var quiz_updated:boolean = false;
 var is_seikai = false;
@@ -73,7 +73,7 @@ function Start () {
 	*/
 	var timestamp:long = trolley["current_time"];
 	
-	var u_at:long = trolley["updated_at"];	
+	var u_at:long = trolley["updated_at"];
 	
 	var cn:int = trolley["current_num"];
 	var time_offset:float;
@@ -88,12 +88,10 @@ function Start () {
 		loop_count = ( time_of_U < loop_time-problem_time ) ? (cn-2) : (cn-1) ;
 	}
 	
-	print(time_offset);
-
 	/*旧
 	scene_start_time = Time.time - time_offset;
 	*/
-	scene_start_time = timestamp/1000 - time_offset;	
+	scene_start_time = timestamp - time_offset;	
 	
 	transform.Translate(0, 0, time_offset*speed);
 }
