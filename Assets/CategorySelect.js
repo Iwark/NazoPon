@@ -23,6 +23,7 @@ RoomCount = 2;//部屋の数を表示
 private var wss:WebSocketScript;
 private var trolleys:List.<System.Object>;
 private var trolley:Dictionary.<String, Object>;
+var trolley_style:GUIStyle = new GUIStyle();
 
 //カテゴリリスト
 private var categories = ["スポーツ","数学理科","文学歴史","雑学","芸能","アニゲー"];
@@ -44,6 +45,8 @@ function OnGUI() {
 
 function Start () {
 	guiLayer = Camera.main.GetComponent(GUILayer);
+
+	trolley_style.fontSize = Screen.width/20;
 
 	var i: int=0;
 	while(i <7) {
@@ -145,6 +148,8 @@ function RenderTrolleys(category){
 
 	GUILayout.BeginVertical(GUILayout.ExpandHeight(true));
 	
+
+
 	for(var t:int = 0; t<category_trolleys.Count; t++){
 
 		if(t%3 == 0) GUILayout.BeginHorizontal();
@@ -152,7 +157,7 @@ function RenderTrolleys(category){
 		var tr:Dictionary.<String, System.Object> = category_trolleys[t];
 		var category_num:int = tr["category"];
 
-		if(GUILayout.Button(categories[category_num-1], [GUILayout.MinWidth(Screen.width*3/10),GUILayout.MinHeight(Screen.width/4), GUILayout.ExpandWidth(false)])){
+		if(GUILayout.Button(categories[category_num-1], trolley_style, [GUILayout.MinWidth(Screen.width*3/10),GUILayout.MinHeight(Screen.width/4), GUILayout.ExpandWidth(false)])){
 			wss.RideTrolley(tr["category"].ToString(),tr["_id"]);
 		}
 
