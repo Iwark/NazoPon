@@ -10,11 +10,22 @@ private var frame:int = 0;
 
 public var rooms : GameObject[];
 rooms = GameObject.FindGameObjectsWithTag("rooms");
-public var make_room : GameObject[];
-make_room = GameObject.FindGameObjectsWithTag("make_room");
+
+//「プロフィール」
+public var text_profile : GameObject;
+text_profile = GameObject.FindGameObjectWithTag("text_profile");
+
+//「クイズのジャンル選択」
+public var text_select_category : GameObject;
+text_select_category = GameObject.FindGameObjectWithTag("text_select_category");
+
+// 「作る部屋のジャンルを選択」
+public var make_room : GameObject;
+make_room = GameObject.FindGameObjectWithTag("make_room");
+
+// 「参加する部屋を選択」
 public var text_make_room : GameObject;
 text_make_room = GameObject.FindGameObjectWithTag("text_make_room");
-
 
 public var RoomCount : int;
 RoomCount = 2;//部屋の数を表示
@@ -23,7 +34,7 @@ RoomCount = 2;//部屋の数を表示
 private var wss:WebSocketScript;
 private var trolleys:List.<System.Object>;
 private var trolley:Dictionary.<String, Object>;
-var trolley_style:GUIStyle = new GUIStyle();
+public var trolley_style:GUIStyle;
 
 //カテゴリリスト
 private var categories = ["スポーツ","数学理科","文学歴史","雑学","芸能","アニゲー"];
@@ -37,6 +48,15 @@ function Awake() {
 }
 
 function OnGUI() {
+
+	text_profile.GetComponent(GUIText).fontSize = Screen.width / 12;
+	text_select_category.GetComponent(GUIText).fontSize = Screen.width / 12;
+	make_room.GetComponent(GUIText).fontSize = Screen.width / 15;
+	text_make_room.GetComponent(GUIText).fontSize = Screen.width / 15;
+
+	trolley_style = new GUIStyle(GUI.skin.button);
+	trolley_style.fontSize = Screen.width/20;
+
 	if(frame % MAX_FRAME == 0) GetTrolleys();
 	frame++;
 	trolleys = Json.Deserialize(wss.trolleys) as List.<System.Object>;
@@ -46,19 +66,7 @@ function OnGUI() {
 function Start () {
 	guiLayer = Camera.main.GetComponent(GUILayer);
 
-	trolley_style.fontSize = Screen.width/20;
-
-	var i: int=0;
-	while(i <7) {
-		make_room[i].SetActive(false);
-		i++;
-	}
-	var j: int=0;
-	while(j < 6) {
-		rooms[j].SetActive(false);
-		j++;
-	}
-	text_make_room.SetActive(false);
+	make_room.SetActive(false);
 
 	chosenCategory = 7;
 }
@@ -141,9 +149,9 @@ function RenderTrolleys(category){
 	}
 
 	GUI.BeginScrollView(
-		Rect(Screen.width/32, Screen.height*6/10, Screen.width - Screen.width/16, Screen.height*4/10), 
+		Rect(Screen.width/32, Screen.height*13/20, Screen.width - Screen.width/16, Screen.height*7/20), 
 		Vector2(0, 0), 
-		Rect(0, 0, Screen.width - Screen.width/16, Screen.height*4/10)
+		Rect(0, 0, Screen.width - Screen.width/16, Screen.height*7/20)
 	);
 
 	GUILayout.BeginVertical(GUILayout.ExpandHeight(true));
