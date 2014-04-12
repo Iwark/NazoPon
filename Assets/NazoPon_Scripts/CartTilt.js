@@ -29,7 +29,7 @@ function Update () {
 	if(c_e_time > c_s_time && c_s_time > 0.0 ){
 
 		if(c_s_time-1.0 < time && time <= c_s_time-0.9){
-	cart.Play();
+			cart.Play();
 			direction = script.going_migi ? -1 : 1 ;
 			transform.Rotate( 0,0, direction * (tilt_angle/0.1) * Time.deltaTime);
 			script.is_tilted = true;

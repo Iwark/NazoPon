@@ -46,6 +46,12 @@ private var wss:WebSocketScript;
 var trolley:Dictionary.<String, Object>;
 
 var Last:boolean;
+//sound
+var hazure : AudioSource;
+hazure = GameObject.Find("Sound_Hazure").GetComponent("AudioSource");
+var hazureBool : boolean = true;
+var sakebi : AudioSource;
+sakebi = GameObject.Find("Sound_Sakebi").GetComponent("AudioSource");
 
 private var kotei_y:float;
 
@@ -248,9 +254,15 @@ function Update () {
 				var theta = 45.0 * t * Mathf.Deg2Rad;
 				transY = (speed * Mathf.Sin(theta) - 21 * t * Mathf.Cos(theta))*Time.deltaTime;
 				transZ = (speed * Mathf.Cos(theta) + 21 * t * Mathf.Sin(theta))*Time.deltaTime;
+				if(hazureBool){
+					Debug.Log("booooooooooooo");
+					hazure.Play();
+					hazureBool = false;
+				}
 				
 				if(fall_start_time +1.0 < ctime){
 					if(mainCamera.enabled){
+						sakebi.Play();
 						//print(migi_correct);
 						if(is_cameraA){ subCameraA.enabled = true; }else{ subCameraB.enabled = true; }
 						mainCamera.enabled = false;
