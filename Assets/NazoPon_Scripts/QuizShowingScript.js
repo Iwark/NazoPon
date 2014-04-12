@@ -177,10 +177,11 @@ function OnGUI () {
 		if(script.is_seikai){
 			if( (t+4.5 < ctime && ctime < t+5.2)
 			 || (t+5.5 < ctime && ctime < t+6.2) ){
-				GUI.Label( Rect(wx*2/18, wy*5/32, wx*14/18, wy*7/32), "正解！", seikaiStyle);
-				//seikai_texture.SetActive(true);
+				//GUI.Label( Rect(wx*2/18, wy*5/32, wx*14/18, wy*7/32), "正解！", seikaiStyle);
+				seikai_texture.SetActive(true);
 				if(seikaiBool){
 					seikai.Play();
+					seikaiBool = false;
 				}
 			}
 			if(t+6.3 < ctime && ctime < t+6.5){
