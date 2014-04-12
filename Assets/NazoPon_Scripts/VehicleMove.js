@@ -148,7 +148,8 @@ function Update () {
 					new_players[i].name = user["_id"];
 				}
 				available_player_count++;
-				new_players[i].transform.parent = transform;
+				//旧: new_players[i].transform.parent = transform;
+				new_players[i].transform.parent = transform.FindChild("CartCenter").transform;
 			}
 
 		}
