@@ -14,6 +14,7 @@ var is_seikai = false;
 var is_handan = false;
 var is_cameraA = false;
 var is_start = true;
+var is_tilted = false; //CartTilt.jsから変更される
 
 var loop_count:int=0;
 var curve_start_time = 0.0;
@@ -148,7 +149,8 @@ function Update () {
 					new_players[i].name = user["_id"];
 				}
 				available_player_count++;
-				new_players[i].transform.parent = transform;
+				//旧: new_players[i].transform.parent = transform;
+				new_players[i].transform.parent = transform.FindChild("CartCenter").transform;
 			}
 
 		}
