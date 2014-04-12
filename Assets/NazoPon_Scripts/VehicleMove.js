@@ -154,7 +154,10 @@ function Update () {
 				}
 				available_player_count++;
 				//旧: new_players[i].transform.parent = transform;
-				new_players[i].transform.parent = transform.FindChild("CartCenter").transform;
+				if(transform != null && transform.FindChild("CartCenter") != null)
+					new_players[i].transform.parent = transform.FindChild("CartCenter").transform;
+				else
+					Debug.Log("transform not found.");
 			}
 
 		}
