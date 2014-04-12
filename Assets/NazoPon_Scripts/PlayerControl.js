@@ -66,10 +66,10 @@ function Update()
 		is_stop = false;
 		//iOS
 		var ax = Input.acceleration.x;
-		if(ax < -0.5){
-			speedScale = 1;
-		}else if(0.5 < ax){
+		if(ax < -0.2){
 			speedScale = -1;
+		}else if(0.2 < ax){
+			speedScale = 1;
 		}else{
 			speedScale = 0;
 		}

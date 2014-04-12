@@ -7,7 +7,7 @@ private var curve_time = 51.8/speed;
 var loop_time = 18.0;
 private var rail_angle = 70.0;
 
-private var scene_start_time:float;
+//private var scene_start_time:float;
 
 var quiz_updated:boolean = false;
 var is_seikai = false;
@@ -16,8 +16,8 @@ var is_cameraA = false;
 var is_start = true;
 
 var loop_count:int=0;
-private var curve_start_time = 0.0;
-private var curve_end_time = 0.0;
+var curve_start_time = 0.0;
+var curve_end_time = 0.0;
 
 private var PLAYER_MAX = 7;
 
@@ -36,7 +36,9 @@ var playerBoyControllerbale:GameObject;
 var players:GameObject[];
 var available_player_count:int = 0;
 
+var first_timestamp:long;
 var time_of_U:float;
+var time_offset:float;
 
 //ユーザーリスト
 private var wss:WebSocketScript;
@@ -50,8 +52,6 @@ function Awake() {
 
 function Start () {
 	
-	CreateMap();
-
 	players = new Array(7);
 
 	going_migi = true;
@@ -66,15 +66,19 @@ function Start () {
 	
 	//遅れて入ってきた場合に経過時間を計算する
 	trolley = Json.Deserialize(wss.trolley) as Dictionary.<String, Object>;
-	
+
+	/* 旧	
 	var epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
 	var timestamp = (System.DateTime.UtcNow - epochStart).TotalSeconds;
+	*/
+
+	first_timestamp = trolley["current_time"];
+	
 	var u_at:long = trolley["updated_at"];	
 	
 	var cn:int = trolley["current_num"];
-	var time_offset:float;
 	
-	time_of_U = timestamp - u_at/1000;
+	time_of_U = (first_timestamp - u_at)/1000.0f;
 
 	if(cn==1){
 		time_offset = time_of_U;
@@ -84,11 +88,14 @@ function Start () {
 		loop_count = ( time_of_U < loop_time-problem_time ) ? (cn-2) : (cn-1) ;
 	}
 	
-	print(time_offset);
 
+	/*旧
 	scene_start_time = Time.time - time_offset;
+	*/
 	
-	transform.Translate(0, 0, time_offset*speed);
+	CreateMap();
+
+	transform.Translate(0, 0, (time_offset - loop_count*loop_time)*speed);
 }
 
 // function addPlayer(){
@@ -141,7 +148,8 @@ function Update () {
 					new_players[i].name = user["_id"];
 				}
 				available_player_count++;
-				new_players[i].transform.parent = transform;
+				//旧: new_players[i].transform.parent = transform;
+				new_players[i].transform.parent = transform.FindChild("CartCenter").transform;
 			}
 
 		}
@@ -182,6 +190,7 @@ function Update () {
 			going_migi = !migi_correct;
 		}
 		wss.is_migi = going_migi;
+
 		//曲がる
 		if(curve_start_time < ctime && ctime < curve_end_time){
 			var direction = going_migi ? 1 : -1;
@@ -191,6 +200,20 @@ function Update () {
 			transform.rotation = new Quaternion.Euler(0, direction2*rail_angle,0);
 			selected = true;
 		}
+		/*曲がる（ボツ）
+		var tilt_angle = 30.0;
+		var direction = going_migi ? 1 : -1;
+		if(curve_start_time-0.8 < ctime && ctime <= curve_start_time-0.6){
+			//transform.Rotate( -direction * (tilt_angle/0.2) * Time.deltaTime ,0,0);
+		}else if(curve_start_time < ctime && ctime < curve_end_time){
+			transform.Rotate(0, direction * (rail_angle/curve_time)*Time.deltaTime, 0); //TODO
+		}else if(curve_end_time < ctime && ctime <= curve_end_time+1.0){
+			//transform.Rotate( direction * (tilt_angle/1.0) * Time.deltaTime ,0,0);
+		}else if(ctime > curve_end_time+1.0 && !selected){
+			transform.rotation = new Quaternion.Euler(0, direction*rail_angle,0);
+			selected = true;
+		}*/
+
 		
 		//正誤格納&問題更新
 		if(ctime > curve_end_time+0.5 && !is_handan){
@@ -277,7 +300,14 @@ function CreateMap(){
 }
 
 function getTime(){
+	/*旧
 	return Time.time - scene_start_time;
+	*/
+
+	trolley = Json.Deserialize(wss.trolley) as Dictionary.<String, Object>;
+	var timestamp:long = trolley["current_time"];
+	var temp_t:float = (timestamp - first_timestamp)/1000.0f;
+	return temp_t + time_offset;
 }
 
 
