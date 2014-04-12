@@ -15,7 +15,7 @@ var count = 0;
 
 function Start(){
 	style = new GUIStyle();
-	style.fontSize = 15;
+	style.fontSize = Screen.width/20;
 	style.normal.textColor = Color.black;
 	
 	var x = new Texture2D(1, 1);
@@ -28,22 +28,22 @@ function OnGUI(){
 	var wx = Screen.width;
 	var wy = Screen.height;
 
-	chat = GUI.TextField(Rect(wx*1/10, wy*17/32, wx*6/10, wy*2/32), chat, 63-user_name.Length);
+	chat = GUI.TextField(Rect(wx*1/10, wy*17/32, wx*6/10, wy*2/32), chat, 48-user_name.Length);
 
 	if( GUI.Button( Rect(wx*7/10, wy*17/32, wx*2/10, wy*2/32), "送信") ){
 		var ChatText = user_name + chat;
 		var ChatLength : int = ChatText.Length;
 		Debug.Log(ChatLength);
-		if(ChatText.Length>21&& ChatText.Length<42){
-			var chat0 = ChatText.Substring(0, 21);
-			var chat1 = ChatText.Substring(21, ChatText.Length-21);
+		if(ChatText.Length>16&& ChatText.Length<32){
+			var chat0 = ChatText.Substring(0, 16);
+			var chat1 = ChatText.Substring(16, ChatText.Length-16);
 			ChatText = chat0 + "\n" + chat1; 
 			ChatLine = 2;
 		}
-		else if(ChatText.Length>42){
-			var chat2 = ChatText.Substring(0, 21);
-			var chat3 = ChatText.Substring(21, 21);
-			var chat4 = ChatText.Substring(42, ChatText.Length-42);
+		else if(ChatText.Length>32){
+			var chat2 = ChatText.Substring(0, 16);
+			var chat3 = ChatText.Substring(16, 16);
+			var chat4 = ChatText.Substring(32, ChatText.Length-32);
 			ChatText = chat2 + "\n" + chat3 + "\n" + chat4; 
 			ChatLine = 3;
 		}
@@ -51,11 +51,11 @@ function OnGUI(){
 			ChatLine = 1;
 		}
 		addChat(ChatText, ChatLine);
-  		chat = GUI.TextField(Rect(wx*1/10, wy*17/32, wx*6/10, wy*2/32), "", 54-user_name.Length);
+  		chat = GUI.TextField(Rect(wx*1/10, wy*17/32, wx*6/10, wy*2/32), "", 48-user_name.Length);
 	}
 
 	GUILayout.BeginVertical(GUILayout.ExpandHeight(true));
-	GUI.Label( Rect(wx*1/9, wy*20/32, wx*7/9, wy*9/32), chatLabel, style);
+	GUI.Label( Rect(wx*1/9, wy*20/32, wx*8/10, wy*9/32), chatLabel, style);
 	GUILayout.EndVertical();
 }
 function Update(){

@@ -48,6 +48,9 @@ var kansei : AudioSource;
 kansei = GameObject.Find("Sound_Kansei").GetComponent("AudioSource");
 var kanseiBool : boolean = true;
 
+//texture
+public var seikai_texture : GameObject;
+seikai_texture = GameObject.Find("Seikai");
 
 function Awake() {
 	wss = GameObject.Find("WebSocket").GetComponent(WebSocketScript);
@@ -64,10 +67,12 @@ function Start(){
 	loop_time = script.loop_time;
 	
 	problemStyle.fontSize = Mathf.Floor(wx/14);
-	choiceLStyle.fontSize = Mathf.Floor(wx/14);
-	choiceRStyle.fontSize = Mathf.Floor(wx/14);
+	choiceLStyle.fontSize = Mathf.Floor(wx/15);
+	choiceRStyle.fontSize = Mathf.Floor(wx/15);
 	countdownStyle.fontSize = Mathf.Floor(wx/6);
 	seikaiStyle.fontSize = Mathf.Floor(wx*4/15);
+	seikaiStyle.normal.textColor = Color.red;
+	seikai_texture.SetActive(false);
 }
 
 function Update (){
@@ -168,14 +173,14 @@ function OnGUI () {
 			countBool = true;
 			
 		}*/
-		
+		seikai_texture.SetActive(false);
 		if(script.is_seikai){
 			if( (t+4.5 < ctime && ctime < t+5.2)
 			 || (t+5.5 < ctime && ctime < t+6.2) ){
 				GUI.Label( Rect(wx*2/18, wy*5/32, wx*14/18, wy*7/32), "正解！", seikaiStyle);
+				//seikai_texture.SetActive(true);
 				if(seikaiBool){
 					seikai.Play();
-					seikaiBool = false;
 				}
 			}
 			if(t+6.3 < ctime && ctime < t+6.5){
