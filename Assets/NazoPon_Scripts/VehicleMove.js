@@ -47,6 +47,8 @@ var trolley:Dictionary.<String, Object>;
 
 var Last:boolean;
 
+private var kotei_y:float;
+
 function Awake() {
 	wss = GameObject.Find("WebSocket").GetComponent(WebSocketScript);
 }
@@ -141,6 +143,8 @@ function Update () {
 						new_players[i] = Instantiate(playerBoyControllerbale, transform.position + Vector3(Random.Range(-1.5f,1.5f), 8, -(6.5+1.5*player_count)), Quaternion.identity);
 						new_players[i].name = user["_id"];
 						already = true;
+						kotei_y = new_players[i].transform.localPosition.y;
+						print("koteiY "+kotei_y);
 					}
 				}
 				//自機でなければ
