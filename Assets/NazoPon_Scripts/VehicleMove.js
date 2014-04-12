@@ -7,7 +7,7 @@ private var curve_time = 51.8/speed;
 var loop_time = 18.0;
 private var rail_angle = 70.0;
 
-private var scene_start_time:float;
+//private var scene_start_time:float;
 
 var quiz_updated:boolean = false;
 var is_seikai = false;
@@ -36,7 +36,9 @@ var playerBoyControllerbale:GameObject;
 var players:GameObject[];
 var available_player_count:int = 0;
 
+var first_timestamp:long;
 var time_of_U:float;
+var time_offset:float;
 
 //ユーザーリスト
 private var wss:WebSocketScript;
@@ -71,14 +73,14 @@ function Start () {
 	var epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
 	var timestamp = (System.DateTime.UtcNow - epochStart).TotalSeconds;
 	*/
-	var timestamp:long = trolley["current_time"];
+
+	first_timestamp = trolley["current_time"];
 	
 	var u_at:long = trolley["updated_at"];	
 	
 	var cn:int = trolley["current_num"];
-	var time_offset:float;
 	
-	time_of_U = (timestamp - u_at)/1000;
+	time_of_U = (first_timestamp - u_at)/1000.0f;
 
 	if(cn==1){
 		time_offset = time_of_U;
@@ -88,12 +90,10 @@ function Start () {
 		loop_count = ( time_of_U < loop_time-problem_time ) ? (cn-2) : (cn-1) ;
 	}
 	
-	print(time_offset);
 
 	/*旧
 	scene_start_time = Time.time - time_offset;
 	*/
-	scene_start_time = timestamp/1000 - time_offset;	
 	
 	transform.Translate(0, 0, time_offset*speed);
 }
@@ -290,7 +290,8 @@ function getTime(){
 
 	trolley = Json.Deserialize(wss.trolley) as Dictionary.<String, Object>;
 	var timestamp:long = trolley["current_time"];
-	return timestamp/1000 - scene_start_time;
+	var temp_t:float = (timestamp - first_timestamp)/1000.0f;
+	return temp_t + time_offset;
 }
 
 
