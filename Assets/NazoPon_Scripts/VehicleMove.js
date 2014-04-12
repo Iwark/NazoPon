@@ -52,8 +52,6 @@ function Awake() {
 
 function Start () {
 	
-	CreateMap();
-
 	players = new Array(7);
 
 	going_migi = true;
@@ -95,7 +93,9 @@ function Start () {
 	scene_start_time = Time.time - time_offset;
 	*/
 	
-	transform.Translate(0, 0, time_offset*speed);
+	CreateMap();
+
+	transform.Translate(0, 0, (time_offset - loop_count*loop_time)*speed);
 }
 
 // function addPlayer(){
