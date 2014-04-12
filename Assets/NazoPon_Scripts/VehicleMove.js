@@ -191,8 +191,10 @@ function Update () {
 		//ここで、問題表示の間は多数決の結果を受信？
 		if(wss.result == "correct"){
 			going_migi = migi_correct;
-		}else{
+			wss.result = "done";
+		}else if(wss.result == "wrong" || wss.result == "same"){
 			going_migi = !migi_correct;
+			wss.result = "done";
 		}
 		wss.is_migi = going_migi;
 
