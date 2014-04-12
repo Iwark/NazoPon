@@ -72,7 +72,7 @@ function Start(){
 	countdownStyle.fontSize = Mathf.Floor(wx/6);
 	seikaiStyle.fontSize = Mathf.Floor(wx*4/15);
 	seikaiStyle.normal.textColor = Color.red;
-	seikai_texture.SetActive(false);
+	//seikai_texture.SetActive(false);
 }
 
 function Update (){
@@ -173,7 +173,7 @@ function OnGUI () {
 			countBool = true;
 			
 		}*/
-		seikai_texture.SetActive(false);
+		//seikai_texture.SetActive(false);
 		if(script.is_seikai){
 			if( (t+4.5 < ctime && ctime < t+5.2)
 			 || (t+5.5 < ctime && ctime < t+6.2) ){
