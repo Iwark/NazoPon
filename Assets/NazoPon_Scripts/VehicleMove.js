@@ -16,8 +16,8 @@ var is_cameraA = false;
 var is_start = true;
 
 var loop_count:int=0;
-private var curve_start_time = 0.0;
-private var curve_end_time = 0.0;
+var curve_start_time = 0.0;
+var curve_end_time = 0.0;
 
 private var PLAYER_MAX = 7;
 
@@ -189,6 +189,7 @@ function Update () {
 			going_migi = !migi_correct;
 		}
 		wss.is_migi = going_migi;
+
 		//曲がる
 		if(curve_start_time < ctime && ctime < curve_end_time){
 			var direction = going_migi ? 1 : -1;
@@ -198,6 +199,20 @@ function Update () {
 			transform.rotation = new Quaternion.Euler(0, direction2*rail_angle,0);
 			selected = true;
 		}
+		/*曲がる（ボツ）
+		var tilt_angle = 30.0;
+		var direction = going_migi ? 1 : -1;
+		if(curve_start_time-0.8 < ctime && ctime <= curve_start_time-0.6){
+			//transform.Rotate( -direction * (tilt_angle/0.2) * Time.deltaTime ,0,0);
+		}else if(curve_start_time < ctime && ctime < curve_end_time){
+			transform.Rotate(0, direction * (rail_angle/curve_time)*Time.deltaTime, 0); //TODO
+		}else if(curve_end_time < ctime && ctime <= curve_end_time+1.0){
+			//transform.Rotate( direction * (tilt_angle/1.0) * Time.deltaTime ,0,0);
+		}else if(ctime > curve_end_time+1.0 && !selected){
+			transform.rotation = new Quaternion.Euler(0, direction*rail_angle,0);
+			selected = true;
+		}*/
+
 		
 		//正誤格納&問題更新
 		if(ctime > curve_end_time+0.5 && !is_handan){
