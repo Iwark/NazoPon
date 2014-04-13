@@ -12,6 +12,7 @@ public class WebSocketScript : MonoBehaviour {
     public bool is_connected;
     public List<Dictionary<string, object>> messages = new List<Dictionary<string, object>>();
     public List<object> users;
+    public Dictionary<string,object> user;
     public string result;
     public bool is_migi;
 
@@ -48,7 +49,7 @@ public class WebSocketScript : MonoBehaviour {
             Debug.Log(string.Format( "Receive {0}",s));
 
             Dictionary<string,object> dict = Json.Deserialize(s) as Dictionary<string,object>;
-            
+
             //問題ごとの結果取得
             if(dict.ContainsKey("result")){
                 result = (string)dict["result"];
@@ -63,7 +64,7 @@ public class WebSocketScript : MonoBehaviour {
             }else if(dict.ContainsKey("message") || dict.ContainsKey("emotion")){
                 messages.Add(dict);
             }else if(dict.ContainsKey("user")){
-                Dictionary<string,object> user = (Dictionary<string,object>)dict["user"];
+                user = (Dictionary<string,object>)dict["user"];
                 if(user.ContainsKey("_id")){
                     user_id = (string)user["_id"];
                 }
