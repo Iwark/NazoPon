@@ -84,7 +84,10 @@ function RenderProfile(){
 	profileLabelStyle.margin.left = 300;
 	var goldLabelStyle:GUIStyle = new GUIStyle(profileLabelStyle);
 	goldLabelStyle.margin.left += LAYOUT_MARGIN;
-	GUILayout.Label("5000G",goldLabelStyle);
+	if(wss != null && wss.user != null && wss.user["money"] != null)
+		GUILayout.Label(wss.user["money"].ToString()+"G", goldLabelStyle);
+	else
+		GUILayout.Label("5000G", goldLabelStyle);
 	GUILayout.EndArea();
 }
 

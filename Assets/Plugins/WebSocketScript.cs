@@ -26,7 +26,7 @@ public class WebSocketScript : MonoBehaviour {
         is_connected = true;
         Connect();
     }
- 
+
     void Update () {
         if(!is_connected){
             Debug.Log("re connecting ...");
@@ -36,17 +36,17 @@ public class WebSocketScript : MonoBehaviour {
     }
 
     void OnGUI(){
- 
+
     }
- 
+
     void Connect(){
         ws =  new WebSocket("ws://donuts.hacker-meetings.com:8081/");
- 
+
         ws.OnMessage += (sender, e) =>
         {
             string s = e.Data;
 
-            Debug.Log(string.Format( "Receive {0}",s));
+            // Debug.Log(string.Format( "Receive {0}",s));
 
             Dictionary<string,object> dict = Json.Deserialize(s) as Dictionary<string,object>;
 
@@ -54,7 +54,7 @@ public class WebSocketScript : MonoBehaviour {
             if(dict.ContainsKey("result")){
                 result = (string)dict["result"];
             }else if(dict.ContainsKey("trolleys")){
-                Debug.Log(Json.Serialize(dict["trolleys"]));
+                // Debug.Log(Json.Serialize(dict["trolleys"]));
                 trolleys = Json.Serialize(dict["trolleys"]);
             }else if(dict.ContainsKey("trolley")){
                 trolley = Json.Serialize(dict["trolley"]);
@@ -90,7 +90,7 @@ public class WebSocketScript : MonoBehaviour {
             is_connected = false;
         };
 
- 
+
         ws.Connect();
         Debug.Log("Connect to " + ws.Url);
     }
@@ -157,6 +157,7 @@ public class WebSocketScript : MonoBehaviour {
 
     public void Continue(string result){
         Debug.Log("Continue.");
+
         Dictionary<string, object> sendData = new Dictionary<string, object>();
         Dictionary<string, string> resData = new Dictionary<string, string>();
         resData["result"] = result;
@@ -165,4 +166,14 @@ public class WebSocketScript : MonoBehaviour {
         Debug.Log("senddata: "+Json.Serialize(sendData));
         ws.Send(Json.Serialize(sendData));
     }
+
+    public void ResetData(){
+        trolleys = null;
+        trolley = null;
+        messages = new List<Dictionary<string, object>>();
+        users = null;
+        result = null;
+        is_migi = false;
+    }
+
 }

@@ -9,6 +9,7 @@ private var vehicle:GameObject;
 private var script:VehicleMove; //VehicleMove.js
 
 private var wss:WebSocketScript;
+private var trolley:Dictionary.<String, Object>;
 
 function Start () {
 
@@ -20,13 +21,15 @@ function Start () {
 	style = new GUIStyle();
 	style.fontSize = Screen.width/20;
 	style.normal.textColor = Color.white;
-	
+
 	if(wss.is_migi==false){//最後にまがったのが左の時
 		right.SetActive(false);
 	}
 	else{//最後にまがったのが右の時
 		left.SetActive(false);
 	}
+
+	wss.ResetData();
 }
 
 function OnGUI(){
@@ -35,17 +38,23 @@ function OnGUI(){
 	buttonStyle.fontSize = Screen.width/12;
 
 	if ( GUI.Button( Rect(Screen.width/2-(Screen.width/3)-50, Screen.height/3, Screen.width/3, Screen.height/7), "Yes", buttonStyle )){
-		Application.LoadLevel("MainScene");
+		wss.Continue("true");
+		Debug.Log("Continueing.");
 	}
 	if ( GUI.Button( Rect(Screen.width/2+50, Screen.height/3, Screen.width/3, Screen.height/7), "No", buttonStyle  )){
-		Debug.Log("Select_Category");
+		wss.Continue("false");
+		Application.LoadLevel("Select_Category");
 	}
 	GUI.Label( Rect(Screen.width*1/10, Screen.height*2/10, Screen.width*5/9, Screen.height/4), "コンティニューしますか？", style);
-	
-	
+
 }
 
-
 function Update () {
+
+	trolley = Json.Deserialize(wss.trolley) as Dictionary.<String, Object>;
+	if(trolley != null && trolley["correct_way"] != null){
+		Debug.Log(trolley["correct_way"]);
+		Application.LoadLevel("MainScene");
+	}
 
 }
